@@ -1,4 +1,6 @@
+
 public class Blockchain implements BlockchainInterface{
+
 
     @Override
     public Block newBlock() {
@@ -6,12 +8,12 @@ public class Blockchain implements BlockchainInterface{
     }
 
     @Override
-    public void newTransaction() {
-
+    public void newTransaction(String sender, String recipient) {
+        currentTransactions.add(Transaction.newTransaction(sender, recipient));
     }
 
     @Override
-    public void hash() {
+    public void hash(Block block) {
 
     }
 
