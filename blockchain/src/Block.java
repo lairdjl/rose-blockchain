@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Block {
@@ -7,7 +6,7 @@ public class Block {
     ArrayList<Transaction> transactions;
     String previousHash, proof;
 
-    Block(ArrayList<Transaction> transactions, String previousHash, String proof){
+    public Block(ArrayList<Transaction> transactions, String previousHash, String proof){
         this.transactions = transactions;
         this.previousHash = previousHash;
         this.proof = proof;

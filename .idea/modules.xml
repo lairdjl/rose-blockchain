@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/blockchain/blockchain.iml" filepath="$PROJECT_DIR$/blockchain/blockchain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/blockchain-tests/blockchain-tests.iml" filepath="$PROJECT_DIR$/blockchain-tests/blockchain-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/rose-blockchain.iml" filepath="$PROJECT_DIR$/rose-blockchain.iml" />
     </modules>
   </component>

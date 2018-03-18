@@ -1,5 +1,11 @@
 import java.util.ArrayList;
 
+;
+
+/**
+ * Blockchain Implemented using instructions from https://hackernoon.com/learn-blockchains-by-building-one-117428612f46
+ *
+ */
 public interface BlockchainInterface {
 
     /*
@@ -12,15 +18,15 @@ public interface BlockchainInterface {
     //This is the index of the last block of the chain
     int lastBlock = -1;
 
-    /*
-    Methods
-     */
 
     /**
+     * This is the function for creating a new block
      *
-     * @return a new block of transactions
+     * @param proof the proof of work
+     * @param previousHash the previous hash
+     * @return the new Block
      */
-    Block newBlock();
+    Block newBlock(int previousHash, int proof);
 
     /**
      * This method defines what a transaction is - currently messages are the only thing being sent through this  blockchain.
@@ -36,7 +42,7 @@ public interface BlockchainInterface {
      *
      * @param block the block to be hashed
      */
-    void hash(Block block);
+    String hash(Block block);
 
     /**
      * This is how to get the last block in the chain
@@ -44,4 +50,19 @@ public interface BlockchainInterface {
      * @return the last block of the blockchain
      */
     Block lastBlock();
+
+    /**
+     * The proof of work algorithm goes here
+     *
+     * @param previousProof the previous proof to do the proof of work.
+     */
+    int proofOfWork(int previousProof);
+
+    /**
+     * Validates the Proof: Does hash(last_proof, proof) contain 4 leading zeroes?
+     *
+     * @param previousProof
+     * @param proof
+     */
+    boolean validateProof(int previousProof, int proof);
 }
