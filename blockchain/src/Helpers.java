@@ -18,8 +18,9 @@ public class Helpers{
         return json;
     }
 
-    public static String encrypt(String str){
+    public static String hashString(String str){
         try{
+            //hash function not encryption
             md = MessageDigest.getInstance("SHA-256");
 
         }catch (NoSuchAlgorithmException e){
@@ -27,11 +28,11 @@ public class Helpers{
         }
         md.update(str.getBytes(StandardCharsets.UTF_8));
         byte[] digest = md.digest();
-        String hex = String.format("%064x", new BigInteger( 1, digest ) );
+        String hex = String.format("%064x", new BigInteger( 1, digest ));
         return hex;
     }
 
     public static String getEncryptedJSON(Object object){
-            return encrypt(getJSON(object));
+            return hashString(getJSON(object));
     }
 }
