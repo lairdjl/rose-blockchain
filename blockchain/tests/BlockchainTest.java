@@ -5,7 +5,7 @@ class BlockchainTest {
 
     @Test
     void createBlockchain(){
-       blockchain = new Blockchain();
+        blockchain = new Blockchain();
         assert(true);
     }
 
@@ -14,15 +14,19 @@ class BlockchainTest {
         createBlockchain();
         blockchain.newTransaction("bob","joe", "hello world");
         blockchain.newTransaction("joe","bob", "communicating thru blockchain!");
-
-        assert(blockchain.currentTransactions.size() == 2);
-
     }
 
     @Test
     void newBlock() {
         newTransaction();
-        blockchain.mine();
+        assert(blockchain.mine());
+        blockchain.newTransaction("bob","joe", "test 3");
+        blockchain.newTransaction("joe","bob", "test 4");
+        blockchain.newTransaction("joe","bob", "test 5");
+        assert(blockchain.mine());
+
+
+
     }
 
 
@@ -32,6 +36,13 @@ class BlockchainTest {
 
     @Test
     void lastBlock() {
+        newBlock();
+        Block lastBlock = blockchain.lastBlock();
+        assert(lastBlock!=null);
+        /**
+         * There are 4 transactions because the mined block is being added into the transaction list currently.
+         */
+        assert(lastBlock.getTransactions().size() == 4);
     }
 
     @Test

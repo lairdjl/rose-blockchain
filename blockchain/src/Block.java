@@ -2,11 +2,23 @@ import java.util.ArrayList;
 
 public class Block {
 
-//    int index = -1;
-    ArrayList<Transaction> transactions;
-    String previousHash;
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
 
-    int proof;
+    public String getPreviousHash() {
+        return previousHash;
+    }
+
+    public int getProof() {
+        return proof;
+    }
+
+    //    int index = -1;
+    private ArrayList<Transaction> transactions;
+    private String previousHash;
+
+    private int proof;
 
     public Block(ArrayList<Transaction> transactions, String previousHash, int proof){
         this.transactions = transactions;

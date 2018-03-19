@@ -97,15 +97,14 @@ public class Blockchain implements BlockchainInterface {
     }
 
     @Override
-    public void mine() {
-        Block lastBlock = this.lastBlock();
-        int lastProof = lastBlock.proof;
+    public boolean mine() {
+        int lastProof = this.lastBlock.getProof();
         int proof = this.proofOfWork(lastProof);
         this.newTransaction(Helpers.MINED_ADDRESS, "TEST_ADDRESS", "Mined Block");
-        previousHash = this.hash(lastBlock);
+        previousHash = this.hash(this.lastBlock);
 
-        Block block = this.newBlock(previousHash, proof);
-        System.out.println("Block mined");
+        this.lastBlock = this.newBlock(previousHash, proof);
+        return true;
     }
 
     /**

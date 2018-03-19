@@ -62,5 +62,5 @@ public interface BlockchainInterface {
      */
     boolean validateProof(int previousProof, int proof);
 
-    void mine();
+    boolean mine();
 }
