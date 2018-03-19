@@ -5,18 +5,26 @@ class BlockchainTest {
 
     @Test
     void createBlockchain(){
-        blockchain = new Blockchain();
-        System.out.print("Hello world");
+       blockchain = new Blockchain();
         assert(true);
     }
 
     @Test
-    void newBlock() {
+    void newTransaction() {
+        createBlockchain();
+        blockchain.newTransaction("bob","joe", "hello world");
+        blockchain.newTransaction("joe","bob", "communicating thru blockchain!");
+
+        assert(blockchain.currentTransactions.size() == 2);
+
     }
 
     @Test
-    void newTransaction() {
+    void newBlock() {
+        newTransaction();
+        blockchain.mine();
     }
+
 
     @Test
     void hash() {

@@ -8,12 +8,15 @@ import java.util.ArrayList;
 public class Blockchain implements BlockchainInterface {
 
     //A list of transactions that will be added to the current block.
-    private ArrayList<Transaction> currentTransactions;
+    public ArrayList<Transaction> currentTransactions;
+    private Block lastBlock;
+    private int proof = 100;
+    private String previousHash = "1";
 
     public Blockchain(){
         currentTransactions = instantiateTransactionList();
         //creating the 'genesis' block
-        newBlock(1, 100);
+        lastBlock = newBlock(previousHash, proof);
     }
 
 
@@ -25,8 +28,8 @@ public class Blockchain implements BlockchainInterface {
      * @return the new Block
      */
     @Override
-    public Block newBlock(int previousHash, int proof) {
-        Block block =  new Block(currentTransactions, "-1", "-1");
+    public Block newBlock(String previousHash, int proof) {
+        Block block =  new Block(currentTransactions, previousHash, proof);
         currentTransactions = instantiateTransactionList();
         chain.add(block);
         return block;
@@ -60,7 +63,7 @@ public class Blockchain implements BlockchainInterface {
      */
     @Override
     public Block lastBlock() {
-        return null;
+        return this.lastBlock;
     }
 
     /**
@@ -89,8 +92,22 @@ public class Blockchain implements BlockchainInterface {
     @Override
     public boolean validateProof(int previousProof, int proof) {
         String guess = previousProof + "" + proof;
+//        System.out.println(guess);
         String guessHash = Helpers.encrypt(guess);
-        return guessHash.substring(0,3) == "0000";
+        System.out.println(guessHash);
+        return guessHash.substring(0,3) == "00";
+    }
+
+    @Override
+    public void mine() {
+        Block lastBlock = this.lastBlock();
+        int lastProof = lastBlock.proof;
+        int proof = this.proofOfWork(lastProof);
+        this.newTransaction(Helpers.MINED_ADDRESS, "TEST_ADDRESS", "Mined Block");
+        previousHash = this.hash(lastBlock);
+
+        Block block = this.newBlock(previousHash, proof);
+        System.out.println("Block mined");
     }
 
     /**

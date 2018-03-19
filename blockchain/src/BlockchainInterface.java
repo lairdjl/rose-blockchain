@@ -15,10 +15,6 @@ public interface BlockchainInterface {
     ArrayList<Block> chain = new ArrayList<Block>();
 
 
-    //This is the index of the last block of the chain
-    int lastBlock = -1;
-
-
     /**
      * This is the function for creating a new block
      *
@@ -26,7 +22,7 @@ public interface BlockchainInterface {
      * @param previousHash the previous hash
      * @return the new Block
      */
-    Block newBlock(int previousHash, int proof);
+    Block newBlock(String previousHash, int proof);
 
     /**
      * This method defines what a transaction is - currently messages are the only thing being sent through this  blockchain.
@@ -65,4 +61,6 @@ public interface BlockchainInterface {
      * @param proof
      */
     boolean validateProof(int previousProof, int proof);
+
+    void mine();
 }

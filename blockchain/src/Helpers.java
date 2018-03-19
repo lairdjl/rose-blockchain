@@ -7,6 +7,8 @@ import java.security.NoSuchAlgorithmException;
 
 
 public class Helpers{
+    public static final String MINED_ADDRESS = "0";
+
     private static Gson gson = new Gson();
     private static MessageDigest md;
 
