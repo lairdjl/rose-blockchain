@@ -14,15 +14,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e70a572e-f02a-471e-9681-afb89c060ea8" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/blockchain/blockchain.iml" afterPath="$PROJECT_DIR$/blockchain/blockchain.iml" />
-      <change beforePath="$PROJECT_DIR$/blockchain/src/Blockchain.java" afterPath="$PROJECT_DIR$/blockchain/src/Blockchain.java" />
-      <change beforePath="$PROJECT_DIR$/blockchain/src/Helpers.java" afterPath="$PROJECT_DIR$/blockchain/src/Helpers.java" />
-      <change beforePath="$PROJECT_DIR$/blockchain/tests/BlockchainTest.java" afterPath="$PROJECT_DIR$/blockchain/tests/BlockchainTest.java" />
-      <change beforePath="$PROJECT_DIR$/out/production/blockchain/Blockchain.class" afterPath="$PROJECT_DIR$/out/production/blockchain/Blockchain.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/blockchain/Helpers.class" afterPath="$PROJECT_DIR$/out/production/blockchain/Helpers.class" />
-      <change beforePath="$PROJECT_DIR$/out/test/blockchain/BlockchainTest.class" afterPath="$PROJECT_DIR$/out/test/blockchain/BlockchainTest.class" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -420,7 +412,7 @@
       <option name="presentableId" value="Default" />
       <updated>1521404714897</updated>
       <workItem from="1521404877698" duration="17202000" />
-      <workItem from="1521424563612" duration="3279000" />
+      <workItem from="1521424563612" duration="3350000" />
     </task>
     <servers />
   </component>
@@ -457,7 +449,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20481000" />
+    <option name="totallyTimeSpent" value="20552000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
