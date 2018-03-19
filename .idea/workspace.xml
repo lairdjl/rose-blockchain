@@ -14,11 +14,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e70a572e-f02a-471e-9681-afb89c060ea8" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/blockchain/src/Block.java" afterPath="$PROJECT_DIR$/blockchain/src/Block.java" />
       <change beforePath="$PROJECT_DIR$/blockchain/src/Blockchain.java" afterPath="$PROJECT_DIR$/blockchain/src/Blockchain.java" />
-      <change beforePath="$PROJECT_DIR$/blockchain/src/BlockchainInterface.java" afterPath="$PROJECT_DIR$/blockchain/src/BlockchainInterface.java" />
-      <change beforePath="$PROJECT_DIR$/blockchain/src/Helpers.java" afterPath="$PROJECT_DIR$/blockchain/src/Helpers.java" />
-      <change beforePath="$PROJECT_DIR$/blockchain/tests/BlockchainTest.java" afterPath="$PROJECT_DIR$/blockchain/tests/BlockchainTest.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -36,27 +32,15 @@
       <file leaf-file-name="Blockchain.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/blockchain/src/Blockchain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="663">
-              <caret line="94" column="30" lean-forward="false" selection-start-line="94" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
+            <state relative-caret-position="589">
+              <caret line="95" column="55" lean-forward="false" selection-start-line="95" selection-start-column="55" selection-end-line="95" selection-end-column="55" />
               <folding>
                 <element signature="e#1482#1483#0" expanded="true" />
                 <element signature="e#1536#1537#0" expanded="true" />
                 <element signature="e#1635#1636#0" expanded="true" />
                 <element signature="e#1672#1673#0" expanded="true" />
-                <element signature="e#3031#3032#0" expanded="true" />
-                <element signature="e#3082#3083#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BlockchainInterface.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/blockchain/src/BlockchainInterface.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="517">
-              <caret line="21" column="26" lean-forward="false" selection-start-line="21" selection-start-column="14" selection-end-line="21" selection-end-column="26" />
-              <folding>
-                <element signature="e#364#371#0" expanded="true" />
+                <element signature="e#2970#2971#0" expanded="true" />
+                <element signature="e#3021#3022#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -85,8 +69,8 @@
       <file leaf-file-name="Helpers.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/blockchain/src/Helpers.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="9" column="44" lean-forward="false" selection-start-line="9" selection-start-column="31" selection-end-line="9" selection-end-column="44" />
+            <state relative-caret-position="725">
+              <caret line="29" column="74" lean-forward="false" selection-start-line="29" selection-start-column="74" selection-end-line="29" selection-end-column="74" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#910#911#0" expanded="true" />
@@ -284,10 +268,11 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>hash</find>
-      <find>Helpers</find>
       <find>hash(</find>
       <find>pro</find>
       <find>previoushash</find>
+      <find>validateProof</find>
+      <find>Helpers</find>
       <find>previousHash</find>
     </findStrings>
   </component>
@@ -309,10 +294,10 @@
         <option value="$PROJECT_DIR$/blockchain/src/Objects/Blockchain/BlockchainInterface.java" />
         <option value="$PROJECT_DIR$/blockchain/src/Objects/Blockchain/Blockchain.java" />
         <option value="$PROJECT_DIR$/blockchain/src/Transaction.java" />
-        <option value="$PROJECT_DIR$/blockchain/src/Helpers.java" />
         <option value="$PROJECT_DIR$/blockchain/src/BlockchainInterface.java" />
         <option value="$PROJECT_DIR$/blockchain/src/Block.java" />
         <option value="$PROJECT_DIR$/blockchain/tests/BlockchainTest.java" />
+        <option value="$PROJECT_DIR$/blockchain/src/Helpers.java" />
         <option value="$PROJECT_DIR$/blockchain/src/Blockchain.java" />
       </list>
     </option>
@@ -535,44 +520,44 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1521404714897</updated>
-      <workItem from="1521404877698" duration="14371000" />
+      <workItem from="1521404877698" duration="15391000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="BlockchainTest - 2018.03.18 at 20h 00m 30s.xml">
+    <history-entry file="BlockchainTest - 2018.03.18 at 21h 07m 30s.xml">
       <configuration name="BlockchainTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="BlockchainTest - 2018.03.18 at 20h 01m 28s.xml">
+    <history-entry file="BlockchainTest - 2018.03.18 at 21h 07m 48s.xml">
       <configuration name="BlockchainTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="BlockchainTest - 2018.03.18 at 20h 23m 09s.xml">
+    <history-entry file="BlockchainTest - 2018.03.18 at 21h 08m 30s.xml">
       <configuration name="BlockchainTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="BlockchainTest - 2018.03.18 at 20h 23m 59s.xml">
+    <history-entry file="BlockchainTest - 2018.03.18 at 21h 09m 15s.xml">
       <configuration name="BlockchainTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="BlockchainTest - 2018.03.18 at 20h 25m 13s.xml">
+    <history-entry file="BlockchainTest - 2018.03.18 at 21h 09m 35s.xml">
       <configuration name="BlockchainTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="BlockchainTest - 2018.03.18 at 20h 25m 38s.xml">
+    <history-entry file="BlockchainTest - 2018.03.18 at 21h 10m 14s.xml">
       <configuration name="BlockchainTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="BlockchainTest - 2018.03.18 at 20h 26m 23s.xml">
+    <history-entry file="BlockchainTest - 2018.03.18 at 21h 10m 28s.xml">
       <configuration name="BlockchainTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="BlockchainTest - 2018.03.18 at 20h 26m 49s.xml">
+    <history-entry file="BlockchainTest - 2018.03.18 at 21h 10m 46s.xml">
       <configuration name="BlockchainTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="Unnamed - 2018.03.18 at 19h 59m 30s.xml">
-      <configuration name="Unnamed" configurationId="JUnit" />
+    <history-entry file="BlockchainTest - 2018.03.18 at 21h 11m 01s.xml">
+      <configuration name="BlockchainTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="Unnamed - 2018.03.18 at 19h 59m 42s.xml">
-      <configuration name="Unnamed" configurationId="JUnit" />
+    <history-entry file="BlockchainTest - 2018.03.18 at 21h 11m 17s.xml">
+      <configuration name="BlockchainTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14371000" />
+    <option name="totallyTimeSpent" value="15391000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -603,7 +588,7 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3296588" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3296588" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Sequence" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296588" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -968,18 +953,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blockchain/src/Helpers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="9" column="44" lean-forward="false" selection-start-line="9" selection-start-column="31" selection-end-line="9" selection-end-column="44" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#910#911#0" expanded="true" />
-            <element signature="e#961#962#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blockchain/src/Block.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
@@ -996,9 +969,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/blockchain/src/Helpers.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="725">
+          <caret line="29" column="74" lean-forward="false" selection-start-line="29" selection-start-column="74" selection-end-line="29" selection-end-column="74" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#910#911#0" expanded="true" />
+            <element signature="e#961#962#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/blockchain/src/BlockchainInterface.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="517">
+        <state relative-caret-position="-83">
           <caret line="21" column="26" lean-forward="false" selection-start-line="21" selection-start-column="14" selection-end-line="21" selection-end-column="26" />
           <folding>
             <element signature="e#364#371#0" expanded="true" />
@@ -1008,15 +993,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/blockchain/src/Blockchain.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="663">
-          <caret line="94" column="30" lean-forward="false" selection-start-line="94" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
+        <state relative-caret-position="589">
+          <caret line="95" column="55" lean-forward="false" selection-start-line="95" selection-start-column="55" selection-end-line="95" selection-end-column="55" />
           <folding>
             <element signature="e#1482#1483#0" expanded="true" />
             <element signature="e#1536#1537#0" expanded="true" />
             <element signature="e#1635#1636#0" expanded="true" />
             <element signature="e#1672#1673#0" expanded="true" />
-            <element signature="e#3031#3032#0" expanded="true" />
-            <element signature="e#3082#3083#0" expanded="true" />
+            <element signature="e#2970#2971#0" expanded="true" />
+            <element signature="e#3021#3022#0" expanded="true" />
           </folding>
         </state>
       </provider>

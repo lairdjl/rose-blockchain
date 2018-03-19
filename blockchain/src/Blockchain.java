@@ -92,10 +92,8 @@ public class Blockchain implements BlockchainInterface {
     @Override
     public boolean validateProof(int previousProof, int proof) {
         String guess = previousProof + "" + proof;
-//        System.out.println(guess);
         String guessHash = Helpers.encrypt(guess);
-        System.out.println(guessHash);
-        return guessHash.substring(0,3) == "00";
+        return guessHash.substring(0,4).compareTo("0000") == 0;
     }
 
     @Override
