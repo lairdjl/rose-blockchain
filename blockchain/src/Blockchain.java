@@ -12,11 +12,20 @@ public class Blockchain implements BlockchainInterface {
     private Block lastBlock;
     private int proof = 100;
     private String previousHash = "1";
+    private Server server;
+    private Client client;
 
     public Blockchain(){
         currentTransactions = instantiateTransactionList();
         //creating the 'genesis' block
         lastBlock = newBlock(previousHash, proof);
+
+        try{
+            server = new Server();
+        } catch(Exception e){
+
+        }
+
     }
 
 

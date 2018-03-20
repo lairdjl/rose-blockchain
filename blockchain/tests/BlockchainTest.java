@@ -1,4 +1,3 @@
-import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 
 class BlockchainTest {
@@ -24,9 +23,6 @@ class BlockchainTest {
         blockchain.newTransaction("bob","joe", "test 3");
         blockchain.newTransaction("joe","bob", "test 4");
         blockchain.newTransaction("joe","bob", "test 5");
-        Gson gson = new Gson();
-        String json = gson.toJson(blockchain.lastBlock());
-        System.out.println(json);
         assert(blockchain.mine());
 
 
