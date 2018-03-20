@@ -1,4 +1,3 @@
-import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 
 class BlockchainTest {
@@ -12,21 +11,21 @@ class BlockchainTest {
 
     @Test
     void newTransaction() {
-        createBlockchain();
+        blockchain = new Blockchain();
         blockchain.newTransaction("bob","joe", "hello world");
         blockchain.newTransaction("joe","bob", "communicating thru blockchain!");
+
     }
 
     @Test
     void newBlock() {
-        newTransaction();
+        blockchain = new Blockchain();
+        blockchain.newTransaction("bob","joe", "hello world");
+        blockchain.newTransaction("joe","bob", "communicating thru blockchain!");
         assert(blockchain.mine());
         blockchain.newTransaction("bob","joe", "test 3");
         blockchain.newTransaction("joe","bob", "test 4");
         blockchain.newTransaction("joe","bob", "test 5");
-        Gson gson = new Gson();
-        String json = gson.toJson(blockchain.lastBlock());
-        System.out.println(json);
         assert(blockchain.mine());
 
 
@@ -40,7 +39,14 @@ class BlockchainTest {
 
     @Test
     void lastBlock() {
-        newBlock();
+        blockchain = new Blockchain();
+        blockchain.newTransaction("bob","joe", "hello world");
+        blockchain.newTransaction("joe","bob", "communicating thru blockchain!");
+        assert(blockchain.mine());
+        blockchain.newTransaction("bob","joe", "test 3");
+        blockchain.newTransaction("joe","bob", "test 4");
+        blockchain.newTransaction("joe","bob", "test 5");
+        assert(blockchain.mine());
         Block lastBlock = blockchain.lastBlock();
         assert(lastBlock!=null);
         /**
