@@ -14,7 +14,6 @@ public interface BlockchainInterface {
     //The 'chain' itself
     ArrayList<Block> chain = new ArrayList<Block>();
 
-
     /**
      * This is the function for creating a new block
      *

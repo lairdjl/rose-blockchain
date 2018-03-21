@@ -6,13 +6,15 @@ import java.net.UnknownHostException;
 
 public class Client implements Runnable {
 
-    protected static String server_IP = "141.117.57.42";
+    private static String server_IP = "141.117.57.42";
     private static final int server_Port = 5555;
-    protected static String client_IP;
+    private static Socket socket;
+    final String host = "localhost";
+    private static String client_IP;
+    private static Client client;
 
+    private Client() throws IOException {
 
-    Client() throws IOException {
-        final String host = "localhost";
         int init = 0;
 
         try {
@@ -24,7 +26,7 @@ public class Client implements Runnable {
         }
 
         try {
-            Socket socket = new Socket(server_IP, server_Port);
+            socket = new Socket(server_IP, server_Port);
             init = initialize(socket);
 
         } catch (SocketException e) {
@@ -38,6 +40,17 @@ public class Client implements Runnable {
 
         }
         //Thread init_Thread = new Thread();
+    }
+
+    public static Client getClient() {
+        if(client == null){
+            try{
+                client = new Client();
+            }catch (Exception e){
+                return null;
+            }
+        }
+        return client;
     }
 
     private static int initialize(Socket socket) throws IOException {

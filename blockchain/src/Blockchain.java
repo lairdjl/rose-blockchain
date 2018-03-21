@@ -14,21 +14,31 @@ public class Blockchain implements BlockchainInterface {
     private String previousHash = "1";
     private Server server;
     private Client client;
+    private ArrayList<String> nodeList = new ArrayList<String>();
 
-    public Blockchain(){
+    private static Blockchain blockchain;
+
+    private Blockchain(){
         currentTransactions = instantiateTransactionList();
         //creating the 'genesis' block
         lastBlock = newBlock(previousHash, proof);
 
         try{
             server = Server.getServer();
+            client = Client.getClient();
 
         } catch(Exception e){
-            System.out.println("Error running server");
+            System.out.println("Error starting communication");
         }
 
     }
 
+    public static Blockchain getBlockchain(){
+        if(blockchain == null){
+            blockchain = new Blockchain();
+        }
+        return blockchain;
+    }
 
     /**
      * This is the function for creating a new block
