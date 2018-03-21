@@ -21,9 +21,10 @@ public class Blockchain implements BlockchainInterface {
         lastBlock = newBlock(previousHash, proof);
 
         try{
-            server = new Server();
-        } catch(Exception e){
+            server = Server.getServer();
 
+        } catch(Exception e){
+            System.out.println("Error running server");
         }
 
     }
