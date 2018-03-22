@@ -1,5 +1,4 @@
-//package edu.lmu.cs.networking;
-
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -8,19 +7,13 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
 /**
  * A simple Swing-based client for the capitalization server.
  * It has a main frame window with a text field for entering
  * strings and a textarea to see the results of capitalizing
  * them.
  */
-public class CapitalizeClient {
+public class OtherClient {
 
     private BufferedReader in;
     private PrintWriter out;
@@ -33,7 +26,7 @@ public class CapitalizeClient {
      * listener with the textfield so that pressing Enter in the
      * listener sends the textfield contents to the server.
      */
-    public CapitalizeClient() {
+    public OtherClient() {
 
         // Layout GUI
         messageArea.setEditable(false);
@@ -99,7 +92,7 @@ public class CapitalizeClient {
      * Runs the client application.
      */
     public static void main(String[] args) throws Exception {
-        CapitalizeClient client = new CapitalizeClient();
+        OtherClient client = new OtherClient();
         client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         client.frame.pack();
         client.frame.setVisible(true);
