@@ -29,8 +29,9 @@ public class Blockchain implements BlockchainInterface {
 
             Thread t = new Thread(server);
             t.start();
-            Thread t2 = new Thread(client);
-            t2.start();
+            client.connectToServer();
+//            Thread t2 = new Thread(client);
+//            t2.start();
 
         } catch(Exception e){
             System.out.println("Error starting communication");

@@ -1,127 +1,117 @@
-import java.io.*;
-import java.net.InetAddress;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 
-public class Client implements Runnable {
+/**
+ * A simple Swing-based client for the capitalization server.
+ * It has a main frame window with a text field for entering
+ * strings and a textarea to see the results of capitalizing
+ * them.
+ */
+public class Client {
 
-    private static String server_IP = "141.117.57.42";
-    private static final int server_Port = 5555;
-    private static Socket socket;
-    private final String host = "localhost";
-
-    private static String client_IP;
-    private static InputStream is;
-    private static BufferedReader br;
+    private BufferedReader in;
+    private PrintWriter out;
+    private JFrame frame = new JFrame("Capitalize Client");
+    private JTextField dataField = new JTextField(40);
+    private JTextArea messageArea = new JTextArea(8, 60);
     private static Client client;
 
-    private Client() throws IOException {
+    /**
+     * Constructs the client by laying out the GUI and registering a
+     * listener with the textfield so that pressing Enter in the
+     * listener sends the textfield contents to the server.
+     */
+    public Client() {
 
-        int init = 0;
+        // Layout GUI
+        messageArea.setEditable(false);
+        frame.getContentPane().add(dataField, "North");
+        frame.getContentPane().add(new JScrollPane(messageArea), "Center");
 
-        try {
-            InetAddress iAddress = InetAddress.getLocalHost();
-            client_IP = iAddress.getHostAddress();
-            System.out.println("Current IP address : " + client_IP);
-        } catch (UnknownHostException e) {
-
-        }
-
-        try {
-            socket = new Socket(server_IP, server_Port);
-            init = initialize(socket);
-
-        } catch (SocketException e) {
-            System.out.println("Error: Unable to connect");
-        }
-
-
-        if (init == 0) {
-            System.out.println("error: Failed to initialize ");
-            System.exit(0);
-
-        }
-        //Thread init_Thread = new Thread();
+        // Add Listeners
+        dataField.addActionListener(new ActionListener() {
+            /**
+             * Responds to pressing the enter key in the textfield
+             * by sending the contents of the text field to the
+             * server and displaying the response from the server
+             * in the text area.  If the response is "." we exit
+             * the whole application, which closes all sockets,
+             * streams and windows.
+             */
+            public void actionPerformed(ActionEvent e) {
+                out.println(dataField.getText());
+                String response;
+                try {
+                    response = in.readLine();
+                    if (response == null || response.equals("")) {
+                        System.exit(0);
+                    }
+                } catch (IOException ex) {
+                    response = "Error: " + ex;
+                }
+                messageArea.append(response + "\n");
+                dataField.selectAll();
+            }
+        });
     }
 
-    public static Client getClient() {
+    public static Client getClient(){
         if(client == null){
-            try{
-                client = new Client();
-            }catch (Exception e){
-                return null;
-            }
+            client = new Client();
+        }
+        try{
+            client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            client.frame.pack();
+            client.frame.setVisible(true);
+            client.connectToServer();
+        }catch (Exception e){
+            System.out.println(e);
         }
         return client;
     }
 
-    private static int initialize(Socket socket) throws IOException {
-        int rt_value = 0;
+    /**
+     * Implements the connection logic by prompting the end user for
+     * the server's IP address, connecting, setting up streams, and
+     * consuming the welcome messages from the server.  The Capitalizer
+     * protocol says that the server sends three lines of text to the
+     * client immediately after establishing a connection.
+     */
+    public void connectToServer() throws IOException {
 
-        OutputStream os = socket.getOutputStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        PrintWriter pw = new PrintWriter(os, true);
+        // Get the server address from a dialog box.
+        String serverAddress = JOptionPane.showInputDialog(
+                frame,
+                "Enter IP Address of the Server:",
+                "Welcome to the Capitalization Program",
+                JOptionPane.QUESTION_MESSAGE);
 
-        pw.println("192.343.34.321");
+        // Make connection and initialize streams
+        Socket socket = new Socket(serverAddress, 9898);
+        in = new BufferedReader(
+                new InputStreamReader(socket.getInputStream()));
+        out = new PrintWriter(socket.getOutputStream(), true);
 
-        socket.close();
-        return rt_value = 1;
-
-
-    }
-
-    public void run() {
-        readFromConsole();
-    }
-
-    private void readFromConsole(){
-        try {
-
-            is = System.in;
-            br = new BufferedReader(new InputStreamReader(is));
-
-            String line = null;
-
-loop:        while ((line = br.readLine()) != null) {
-                switch(line){
-                    case "quit":
-                        break loop;
-                    case "m":
-                        String address, message;
-
-                        System.out.print("Enter Address : " );
-                        address = br.readLine();
-
-                        System.out.print("Enter Message : ");
-                        message = br.readLine();
-
-                        break;
-                    case "h":
-                        System.out.println("'quit' quits the application");
-                        System.out.println("'m' sends a message");
-
-                    default:
-                        System.out.println("Type h for help");
-                }
-            }
-
-        }
-        catch (IOException ioe) {
-            System.out.println("Exception while reading input " + ioe);
-        }
-        finally {
-            // close the streams using close method
-            try {
-                if (br != null) {
-                    br.close();
-                }
-            }
-            catch (IOException ioe) {
-                System.out.println("Error while closing stream: " + ioe);
-            }
-
+        // Consume the initial welcoming messages from the server
+        for (int i = 0; i < 3; i++) {
+            messageArea.append(in.readLine() + "\n");
         }
     }
 
+    /**
+     * Runs the client application.
+     */
+//    public static void main(String[] args) throws Exception {
+//        Client client = new Client();
+//        client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        client.frame.pack();
+//        client.frame.setVisible(true);
+//        client.connectToServer();
+//    }
 }
