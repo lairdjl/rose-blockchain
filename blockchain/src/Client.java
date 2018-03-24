@@ -20,7 +20,6 @@ public class Client {
     private JFrame frame = new JFrame("Capitalize Client");
     private JTextField dataField = new JTextField(40);
     private JTextArea messageArea = new JTextArea(8, 60);
-    private static Client client;
 
     /**
      * Constructs the client by laying out the GUI and registering a
@@ -61,19 +60,12 @@ public class Client {
         });
     }
 
-    public static Client getClient(){
-        if(client == null){
-            client = new Client();
-        }
-        return client;
-    }
-
-    public static void getNewGUI(){
+    public void getNewGUI(){
         try{
-            client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            client.frame.pack();
-            client.frame.setVisible(true);
-            client.connectToServer();
+            this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            this.frame.pack();
+            this.frame.setVisible(true);
+            this.connectToServer();
         }catch (Exception e){
             System.out.println(e);
         }
