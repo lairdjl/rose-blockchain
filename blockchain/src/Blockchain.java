@@ -25,13 +25,12 @@ public class Blockchain implements BlockchainInterface {
 
         try{
             server = Server.getServer();
-            client = new Client();
 
             Thread t = new Thread(server);
             t.start();
-            client.startInterface();
-//            Thread t2 = new Thread(client);
-//            t2.start();
+
+            client = new Client();
+
 
         } catch(Exception e){
             System.out.println("Error starting communication");

@@ -59,14 +59,16 @@ public class Client {
             }
         });
 
-    }
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
 
-    public void startInterface(){
         try{
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.pack();
-            frame.setVisible(true);
             connectToServer();
+        }catch (Exception e){
+            System.out.println(e);
+
+        } finally {
             Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -85,10 +87,21 @@ public class Client {
                 }
             });
             t.start();
-        }catch (Exception e){
-            System.out.println(e);
         }
+
     }
+
+//    public void startInterface(){
+//        try{
+//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//            frame.pack();
+//            frame.setVisible(true);
+//            connectToServer();
+//
+//        }catch (Exception e){
+//            System.out.println(e);
+//        }
+//    }
 
     /**
      * Implements the connection logic by prompting the end user for
