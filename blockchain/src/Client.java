@@ -65,6 +65,10 @@ public class Client {
         if(client == null){
             client = new Client();
         }
+        return client;
+    }
+
+    public static void getNewGUI(){
         try{
             client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             client.frame.pack();
@@ -73,7 +77,6 @@ public class Client {
         }catch (Exception e){
             System.out.println(e);
         }
-        return client;
     }
 
     /**

@@ -32,7 +32,7 @@ public class Server implements Runnable{
 
     private Server() throws Exception{
         System.out.println("The capitalization server is running.");
-        ServerSocket listener = new ServerSocket(9898);
+        listener = new ServerSocket(9898);
     }
 
     public static Server getServer(){
@@ -40,6 +40,7 @@ public class Server implements Runnable{
             try{
                 server = new Server();
             }catch (Exception e){
+                System.out.println(e);
                 return null;
             }
         }
@@ -119,6 +120,7 @@ public class Server implements Runnable{
                         break;
                     }
                     out.println(input.toUpperCase());
+                    System.out.println(input);
                 }
             } catch (IOException e) {
                 log("Error handling client# " + clientNumber + ": " + e);
