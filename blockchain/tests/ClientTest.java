@@ -6,7 +6,7 @@ class ClientTest {
     @Test
     void getClient() {
         client = new Client();
-        client.getNewGUI();
+        client.startInterface();
         assert(client != null);
     }
 

@@ -58,14 +58,33 @@ public class Client {
                 dataField.selectAll();
             }
         });
+
     }
 
-    public void getNewGUI(){
+    public void startInterface(){
         try{
-            this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.frame.pack();
-            this.frame.setVisible(true);
-            this.connectToServer();
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.pack();
+            frame.setVisible(true);
+            connectToServer();
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    out.println(dataField.getText());
+                    String response;
+                    try {
+                        response = in.readLine();
+                        if (response == null || response.equals(".q")) {
+                            System.exit(0);
+                        }
+                    } catch (IOException ex) {
+                        response = "Error: " + ex;
+                    }
+                    messageArea.append(response + "\n");
+                    dataField.selectAll();
+                }
+            });
+            t.start();
         }catch (Exception e){
             System.out.println(e);
         }
