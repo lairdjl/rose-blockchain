@@ -48,7 +48,7 @@ public class Client {
                 String response;
                 try {
                     response = in.readLine();
-                    if (response == null || response.equals("")) {
+                    if (response.compareTo(".q") == 0) {
                         System.exit(0);
                     }
                 } catch (IOException ex) {
@@ -76,7 +76,7 @@ public class Client {
                     String response;
                     try {
                         response = in.readLine();
-                        if (response == null || response.equals(".q")) {
+                        if (response.compareTo(".q") == 0) {
                             System.exit(0);
                         }
                     } catch (IOException ex) {
@@ -91,17 +91,6 @@ public class Client {
 
     }
 
-//    public void startInterface(){
-//        try{
-//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//            frame.pack();
-//            frame.setVisible(true);
-//            connectToServer();
-//
-//        }catch (Exception e){
-//            System.out.println(e);
-//        }
-//    }
 
     /**
      * Implements the connection logic by prompting the end user for
@@ -134,11 +123,7 @@ public class Client {
     /**
      * Runs the client application.
      */
-//    public static void main(String[] args) throws Exception {
-//        Client client = new Client();
-//        client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        client.frame.pack();
-//        client.frame.setVisible(true);
-//        client.connectToServer();
-//    }
+    public static void main(String[] args){
+        Client client = new Client();
+    }
 }

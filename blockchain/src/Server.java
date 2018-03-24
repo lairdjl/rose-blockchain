@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * A server program which accepts requests from clients to
@@ -28,6 +29,7 @@ public class Server implements Runnable{
      */
 
     private static Server server;
+    private static ArrayList<PrintWriter> clients = new ArrayList<>();
     private ServerSocket listener;
 
     private Server() throws Exception{
@@ -107,6 +109,7 @@ public class Server implements Runnable{
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(socket.getInputStream()));
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                clients.add(out);
 
                 // Send a welcome message to the client.
                 out.println("Hello, you are client #" + clientNumber + ".");
@@ -116,10 +119,13 @@ public class Server implements Runnable{
                 // capitalized
                 while (true) {
                     String input = in.readLine();
-                    if (input == null || input.equals(".")) {
+                    if (input.compareTo(".q") == 0) {
                         break;
                     }
-                    out.println(input.toUpperCase());
+//                    out.println(input.toUpperCase());
+                    for (PrintWriter pw : clients){
+                        pw.println(input);
+                    }
                     System.out.println(input);
                 }
             } catch (IOException e) {

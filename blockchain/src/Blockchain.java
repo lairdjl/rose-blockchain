@@ -139,4 +139,13 @@ public class Blockchain implements BlockchainInterface {
     public ArrayList<Transaction> instantiateTransactionList(){
         return new ArrayList<Transaction>();
     }
+
+    /**
+     * Start up the blockchain
+     * @param args
+     */
+    public static void main(String[] args){
+        blockchain = Blockchain.getBlockchain();
+    }
+
 }
