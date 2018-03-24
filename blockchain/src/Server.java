@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A server program which accepts requests from clients to
@@ -86,6 +88,7 @@ public class Server implements Runnable{
      * containing only a period.
      */
     private static class Capitalizer extends Thread {
+        private static HashMap<Integer, ClientData> clientData = new HashMap<>();
         private Socket socket;
         private int clientNumber;
 
@@ -111,6 +114,9 @@ public class Server implements Runnable{
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 clients.add(out);
 
+                ClientData data = new ClientData(socket,in,out);
+                clientData.put(clientNumber, data);
+
                 // Send a welcome message to the client.
                 out.println("Hello, you are client #" + clientNumber + ".");
                 out.println("Enter a line with only a period to quit\n");
@@ -123,8 +129,10 @@ public class Server implements Runnable{
                         break;
                     }
 //                    out.println(input.toUpperCase());
-                    for (PrintWriter pw : clients){
-                        pw.println(input);
+                    for (Map.Entry<Integer, ClientData> entry: clientData.entrySet()){
+                        ClientData cd = entry.getValue();
+                        cd.out.println(input);
+//                        pw.println(input);
                     }
                     System.out.println(input);
                 }
@@ -138,6 +146,20 @@ public class Server implements Runnable{
                 }
                 log("Connection with client# " + clientNumber + " closed");
             }
+        }
+
+        private class ClientData{
+            private Socket socket;
+            private BufferedReader in;
+            private PrintWriter out;
+
+            ClientData(Socket socket, BufferedReader in, PrintWriter out){
+                this.socket = socket;
+                this.in = in;
+                this.out = out;
+            }
+
+
         }
 
         /**
