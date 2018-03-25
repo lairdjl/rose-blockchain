@@ -1,16 +1,14 @@
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * A server program which accepts requests from clients to
- * capitalize strings.  When clients connect, a new thread is
+ * A server program which accepts requests from clientList to
+ * capitalize strings.  When clientList connect, a new thread is
  * started to handle an interactive dialog in which the client
  * sends in a string and the server thread sends back the
  * capitalized version of the string.
@@ -19,7 +17,7 @@ import java.util.Map;
  * dependent.  If you ran it from a console window with the "java"
  * interpreter, Ctrl+C generally will shut it down.
  */
-public class Server implements Runnable{
+public class Server{
 
     /**
      * Application method to run the server runs in an infinite loop
@@ -31,12 +29,50 @@ public class Server implements Runnable{
      */
 
     private static Server server;
-    private static ArrayList<PrintWriter> clients = new ArrayList<>();
     private ServerSocket listener;
+    private ArrayList<ClientConnection> clientList;
+    private LinkedBlockingQueue<Object> messages;
 
     private Server() throws Exception{
-        System.out.println("The capitalization server is running.");
+        log("The server is running.");
         listener = new ServerSocket(9898);
+        clientList = new ArrayList<ClientConnection>();
+        messages = new LinkedBlockingQueue<Object>();
+
+
+        Thread accept = new Thread() {
+            public void run(){
+                int clientNumber = 0;
+                while(true){
+                    try{
+                        Socket s = listener.accept();
+                        ClientConnection conn = new ClientConnection(s, clientNumber);
+                        clientList.add(new ClientConnection(s, clientNumber));
+                    }
+                    catch(Exception e){
+                        log("error");
+                    }
+                }
+            }
+        };
+
+//        accept.setDaemon(true);
+        accept.start();
+        Thread messageHandling = new Thread() {
+            public void run(){
+                while(true){
+                    try{
+                        Object message = messages.take();
+                        // Do some handling here...
+                        log("Message Received: " + message);
+                    }
+                    catch(InterruptedException e){ }
+                }
+            }
+        };
+
+//        messageHandling.setDaemon(true);
+        messageHandling.start();
     }
 
     public static Server getServer(){
@@ -44,130 +80,76 @@ public class Server implements Runnable{
             try{
                 server = new Server();
             }catch (Exception e){
-                System.out.println(e);
+                e.printStackTrace();
                 return null;
             }
         }
         return server;
     }
 
-    /**
-     * When an object implementing interface <code>Runnable</code> is used
-     * to create a thread, starting the thread causes the object's
-     * <code>run</code> method to be called in that separately executing
-     * thread.
-     * <p>
-     * The general contract of the method <code>run</code> is that it may
-     * take any action whatsoever.
-     *
-     * @see Thread#run()
-     */
-    @Override
-    public void run() {
-        int clientNumber = 0;
-
-        try {
-            while (true) {
-                new Capitalizer(listener.accept(), clientNumber++).start();
-            }
-        }catch (Exception e) {
-
-        }finally
-         {
-             try{
-                 listener.close();
-             }catch (Exception e){
-
-             }
-        }
-    }
 
     /**
      * A private thread to handle capitalization requests on a particular
      * socket.  The client terminates the dialogue by sending a single line
      * containing only a period.
      */
-    private static class Capitalizer extends Thread {
-        private static HashMap<Integer, ClientData> clientData = new HashMap<>();
-        private Socket socket;
-        private int clientNumber;
+    private class ClientConnection {
+        ObjectInputStream in;
+        ObjectOutputStream out;
+        Socket socket;
+        int clientNumber;
 
-        public Capitalizer(Socket socket, int clientNumber) {
+        ClientConnection(Socket socket, int clientNumber) throws Exception{
             this.socket = socket;
             this.clientNumber = clientNumber;
+
+            in = new ObjectInputStream(socket.getInputStream());
+            log("ClientConnection");
+
+            out = new ObjectOutputStream(socket.getOutputStream());
+
+
             log("New connection with client# " + clientNumber + " at " + socket);
-        }
-
-        /**
-         * Services this thread's client by first sending the
-         * client a welcome message then repeatedly reading strings
-         * and sending back the capitalized version of the string.
-         */
-        public void run() {
-            try {
-
-                // Decorate the streams so we can send characters
-                // and not just bytes.  Ensure output is flushed
-                // after every newline.
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(socket.getInputStream()));
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                clients.add(out);
-
-                ClientData data = new ClientData(socket,in,out);
-                clientData.put(clientNumber, data);
-
-                // Send a welcome message to the client.
-                out.println("Hello, you are client #" + clientNumber + ".");
-                out.println("Enter a line with only a period to quit\n");
-
-                // Get messages from the client, line by line; return them
-                // capitalized
-                while (true) {
-                    String input = in.readLine();
-                    if (input.compareTo(".q") == 0) {
-                        break;
+            Thread read = new Thread(){
+                public void run(){
+                    while(true){
+                        try{
+                            Object obj = in.readObject();
+                            if(obj!= null || obj.toString().compareTo("") != 0){
+                                messages.put(obj);
+                                log(obj);
+                            }
+                        }
+                        catch(Exception e){ e.printStackTrace(); }
                     }
-//                    out.println(input.toUpperCase());
-                    for (Map.Entry<Integer, ClientData> entry: clientData.entrySet()){
-                        ClientData cd = entry.getValue();
-                        cd.out.println(input);
-//                        pw.println(input);
-                    }
-                    System.out.println(input);
                 }
-            } catch (IOException e) {
-                log("Error handling client# " + clientNumber + ": " + e);
-            } finally {
-                try {
-                    socket.close();
-                } catch (IOException e) {
-                    log("Couldn't close a socket, what's going on?");
-                }
-                log("Connection with client# " + clientNumber + " closed");
+            };
+            read.setDaemon(true); // terminate when main ends
+            read.start();
+        }
+
+        public void write(Object obj) {
+            try{
+                out.writeObject(obj);
             }
+            catch(IOException e){ e.printStackTrace(); }
         }
+    }
 
-        private class ClientData{
-            private Socket socket;
-            private BufferedReader in;
-            private PrintWriter out;
+    public void sendTo(int index, Object message)throws IndexOutOfBoundsException {
+        clientList.get(index).write(message);
+    }
 
-            ClientData(Socket socket, BufferedReader in, PrintWriter out){
-                this.socket = socket;
-                this.in = in;
-                this.out = out;
-            }
+    public void sendToAll(Object message){
+        for(ClientConnection client : clientList)
+            client.write(message);
+    }
 
-
-        }
-
-        /**
-         * Logs a simple message.  In this case we just write the
-         * message to the server applications standard output.
-         */
-        private void log(String message) {
-            System.out.println(message);
-        }
+    /**
+     * Logs a simple message.  In this case we just write the
+     * message to the server applications standard output.
+     */
+    private static void log(Object message) {
+        System.out.println(message);
     }
 }

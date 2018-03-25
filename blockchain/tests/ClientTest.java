@@ -5,7 +5,11 @@ class ClientTest {
 
     @Test
     void getClient() {
-        client = new Client();
+        try{
+            client = new Client();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         assert(client != null);
     }
 

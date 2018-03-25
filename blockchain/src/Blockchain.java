@@ -26,8 +26,8 @@ public class Blockchain implements BlockchainInterface {
         try{
             server = Server.getServer();
 
-            Thread t = new Thread(server);
-            t.start();
+//            Thread t = new Thread(server);
+//            t.start();
 
             client = new Client();
 

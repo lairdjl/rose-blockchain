@@ -1,11 +1,11 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * A simple Swing-based client for the capitalization server.
@@ -15,24 +15,58 @@ import java.net.Socket;
  */
 public class Client {
 
-    private BufferedReader in;
-    private PrintWriter out;
-    private JFrame frame = new JFrame("Capitalize Client");
+    private JFrame frame = new JFrame("Client");
     private JTextField dataField = new JTextField(40);
     private JTextArea messageArea = new JTextArea(8, 60);
 
+    private ServerConnection server;
+    private LinkedBlockingQueue<Object> messages;
+    private Socket socket;
     /**
      * Constructs the client by laying out the GUI and registering a
      * listener with the textfield so that pressing Enter in the
      * listener sends the textfield contents to the server.
      */
-    public Client() {
+    public Client() throws Exception{
+
+        messages = new LinkedBlockingQueue<Object>();
 
         // Layout GUI
         messageArea.setEditable(false);
         frame.getContentPane().add(dataField, "North");
         frame.getContentPane().add(new JScrollPane(messageArea), "Center");
 
+
+
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+
+        String serverAddress = JOptionPane.showInputDialog(
+                    frame,
+                    "Enter IP Address of the Server:",
+                    "Welcome to the Blockchain client",
+                    JOptionPane.QUESTION_MESSAGE);
+
+        socket = new Socket(serverAddress, 9898);
+        server = new ServerConnection(socket);
+
+        Thread messageHandling = new Thread() {
+            public void run(){
+                while(true){
+                    try{
+                        Object message = messages.take();
+                        // Do some handling here...
+                        System.out.println("Message Received: " + message);
+                    }
+                    catch(InterruptedException e){ }
+                }
+            }
+        };
+
+//        messageHandling.setDaemon(true);
+        messageHandling.start();
         // Add Listeners
         dataField.addActionListener(new ActionListener() {
             /**
@@ -44,13 +78,14 @@ public class Client {
              * streams and windows.
              */
             public void actionPerformed(ActionEvent e) {
-                out.println(dataField.getText());
+                System.out.println("Action performed");
+                server.write(dataField.getText());
                 String response;
                 try {
-                    response = in.readLine();
-                    if (response.compareTo(".q") == 0) {
-                        System.exit(0);
-                    }
+                response = server.in.readLine();
+                if (response.compareTo(".q") == 0) {
+                    System.exit(0);
+                }
                 } catch (IOException ex) {
                     response = "Error: " + ex;
                 }
@@ -58,36 +93,7 @@ public class Client {
                 dataField.selectAll();
             }
         });
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-
-        try{
-            connectToServer();
-        }catch (Exception e){
-            System.out.println(e);
-
-        } finally {
-            Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    out.println(dataField.getText());
-                    String response;
-                    try {
-                        response = in.readLine();
-                        if (response.compareTo(".q") == 0) {
-                            System.exit(0);
-                        }
-                    } catch (IOException ex) {
-                        response = "Error: " + ex;
-                    }
-                    messageArea.append(response + "\n");
-                    dataField.selectAll();
-                }
-            });
-            t.start();
-        }
+        server.write("testmessage");
 
     }
 
@@ -99,31 +105,53 @@ public class Client {
      * protocol says that the server sends three lines of text to the
      * client immediately after establishing a connection.
      */
-    public void connectToServer() throws IOException {
 
-        // Get the server address from a dialog box.
-        String serverAddress = JOptionPane.showInputDialog(
-                frame,
-                "Enter IP Address of the Server:",
-                "Welcome to the Capitalization Program",
-                JOptionPane.QUESTION_MESSAGE);
+    private class ServerConnection{
+        ObjectInputStream in;
+        ObjectOutputStream out;
+        Socket socket;
+        ServerConnection(Socket socket)throws Exception{
+            this.socket = socket;
+            this.out = new ObjectOutputStream(socket.getOutputStream());
+            this.in = new ObjectInputStream(socket.getInputStream());
 
-        // Make connection and initialize streams
-        Socket socket = new Socket(serverAddress, 9898);
-        in = new BufferedReader(
-                new InputStreamReader(socket.getInputStream()));
-        out = new PrintWriter(socket.getOutputStream(), true);
+            Thread read = new Thread(){
+                public void run(){
+                    while(true){
+                        try{
+                            Object obj = in.readObject();
+                            messages.put(obj);
+                        }
+                        catch(Exception e){ e.printStackTrace(); }
+                    }
+                }
+            };
 
-        // Consume the initial welcoming messages from the server
-        for (int i = 0; i < 3; i++) {
-            messageArea.append(in.readLine() + "\n");
+//            read.setDaemon(true);
+            read.start();
         }
+
+        private void write(Object obj) {
+            try{
+                out.writeObject(obj);
+            }
+            catch(IOException e){ e.printStackTrace(); }
+        }
+
     }
+    public void send(Object obj) {
+        server.write(obj);
+    }
+
 
     /**
      * Runs the client application.
      */
     public static void main(String[] args){
-        Client client = new Client();
+        try{
+            Client client = new Client();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
