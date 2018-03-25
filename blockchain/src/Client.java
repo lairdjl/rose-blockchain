@@ -22,12 +22,13 @@ public class Client {
     private ServerConnection server;
     private LinkedBlockingQueue<Object> messages;
     private Socket socket;
+
     /**
      * Constructs the client by laying out the GUI and registering a
      * listener with the textfield so that pressing Enter in the
      * listener sends the textfield contents to the server.
      */
-    public Client() throws Exception{
+    public Client() throws Exception {
 
         messages = new LinkedBlockingQueue<Object>();
 
@@ -35,32 +36,29 @@ public class Client {
         messageArea.setEditable(false);
         frame.getContentPane().add(dataField, "North");
         frame.getContentPane().add(new JScrollPane(messageArea), "Center");
-
-
-
-
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
 
         String serverAddress = JOptionPane.showInputDialog(
-                    frame,
-                    "Enter IP Address of the Server:",
-                    "Welcome to the Blockchain client",
-                    JOptionPane.QUESTION_MESSAGE);
+                frame,
+                "Enter IP Address of the Server:",
+                "Welcome to the Blockchain client",
+                JOptionPane.QUESTION_MESSAGE);
 
         socket = new Socket(serverAddress, 9898);
         server = new ServerConnection(socket);
 
         Thread messageHandling = new Thread() {
-            public void run(){
-                while(true){
-                    try{
+            public void run() {
+                while (true) {
+                    try {
                         Object message = messages.take();
                         // Do some handling here...
                         System.out.println("Message Received: " + message);
+                        messageArea.append(message + "\n");
+                    } catch (InterruptedException e) {
                     }
-                    catch(InterruptedException e){ }
                 }
             }
         };
@@ -82,19 +80,17 @@ public class Client {
                 server.write(dataField.getText());
                 String response;
                 try {
-                response = server.in.readLine();
-                if (response.compareTo(".q") == 0) {
-                    System.exit(0);
-                }
-                } catch (IOException ex) {
+                    response = server.in.readObject().toString();
+                    if (response.compareTo(".q") == 0) {
+                        System.exit(0);
+                    }
+                } catch (Exception ex) {
                     response = "Error: " + ex;
                 }
                 messageArea.append(response + "\n");
                 dataField.selectAll();
             }
         });
-        server.write("testmessage");
-
     }
 
 
@@ -106,23 +102,25 @@ public class Client {
      * client immediately after establishing a connection.
      */
 
-    private class ServerConnection{
+    private class ServerConnection {
         ObjectInputStream in;
         ObjectOutputStream out;
         Socket socket;
-        ServerConnection(Socket socket)throws Exception{
+
+        ServerConnection(Socket socket) throws Exception {
             this.socket = socket;
             this.out = new ObjectOutputStream(socket.getOutputStream());
             this.in = new ObjectInputStream(socket.getInputStream());
 
-            Thread read = new Thread(){
-                public void run(){
-                    while(true){
-                        try{
+            Thread read = new Thread() {
+                public void run() {
+                    while (true) {
+                        try {
                             Object obj = in.readObject();
                             messages.put(obj);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        catch(Exception e){ e.printStackTrace(); }
                     }
                 }
             };
@@ -132,13 +130,15 @@ public class Client {
         }
 
         private void write(Object obj) {
-            try{
+            try {
                 out.writeObject(obj);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            catch(IOException e){ e.printStackTrace(); }
         }
 
     }
+
     public void send(Object obj) {
         server.write(obj);
     }
@@ -147,10 +147,11 @@ public class Client {
     /**
      * Runs the client application.
      */
-    public static void main(String[] args){
-        try{
+    public static void main(String[] args) {
+        try {
             Client client = new Client();
-        }catch (Exception e){
+            client.server.write("hello");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

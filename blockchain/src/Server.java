@@ -12,12 +12,12 @@ import java.util.concurrent.LinkedBlockingQueue;
  * started to handle an interactive dialog in which the client
  * sends in a string and the server thread sends back the
  * capitalized version of the string.
- *
+ * <p>
  * The program is runs in an infinite loop, so shutdown in platform
  * dependent.  If you ran it from a console window with the "java"
  * interpreter, Ctrl+C generally will shut it down.
  */
-public class Server{
+public class Server {
 
     /**
      * Application method to run the server runs in an infinite loop
@@ -33,7 +33,7 @@ public class Server{
     private ArrayList<ClientConnection> clientList;
     private LinkedBlockingQueue<Object> messages;
 
-    private Server() throws Exception{
+    private Server() throws Exception {
         log("The server is running.");
         listener = new ServerSocket(9898);
         clientList = new ArrayList<ClientConnection>();
@@ -41,14 +41,13 @@ public class Server{
 
 
         Thread accept = new Thread() {
-            public void run(){
+            public void run() {
                 int clientNumber = 0;
-                while(true){
-                    try{
+                while (true) {
+                    try {
                         Socket s = listener.accept();
                         clientList.add(new ClientConnection(s, clientNumber));
-                    }
-                    catch(Exception e){
+                    } catch (Exception e) {
                         log("error");
                     }
                 }
@@ -58,14 +57,14 @@ public class Server{
         accept.setDaemon(true);
         accept.start();
         Thread messageHandling = new Thread() {
-            public void run(){
-                while(true){
-                    try{
+            public void run() {
+                while (true) {
+                    try {
                         Object message = messages.take();
                         // Do some handling here...
                         log("Message Received: " + message);
+                    } catch (InterruptedException e) {
                     }
-                    catch(InterruptedException e){ }
                 }
             }
         };
@@ -74,11 +73,11 @@ public class Server{
         messageHandling.start();
     }
 
-    public static Server getServer(){
-        if(server == null){
-            try{
+    public static Server getServer() {
+        if (server == null) {
+            try {
                 server = new Server();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
@@ -98,27 +97,27 @@ public class Server{
         Socket socket;
         int clientNumber;
 
-        ClientConnection(Socket socket, int clientNumber) throws Exception{
+        ClientConnection(Socket socket, int clientNumber) throws Exception {
             this.socket = socket;
             this.clientNumber = clientNumber;
 
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-            log("ClientConnection");
-
 
             log("New connection with client# " + clientNumber + " at " + socket);
-            Thread read = new Thread(){
-                public void run(){
-                    while(true){
-                        try{
+            Thread read = new Thread() {
+                public void run() {
+                    while (true) {
+                        try {
                             Object obj = in.readObject();
-                            if(obj!= null || obj.toString().compareTo("") != 0){
+                            if (obj != null || obj.toString().compareTo("") != 0) {
                                 messages.put(obj);
-                                log(obj);
+//                                log(obj);
+                                sendToAll(obj);
                             }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        catch(Exception e){ e.printStackTrace(); }
                     }
                 }
             };
@@ -127,19 +126,20 @@ public class Server{
         }
 
         public void write(Object obj) {
-            try{
+            try {
                 out.writeObject(obj);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            catch(IOException e){ e.printStackTrace(); }
         }
     }
 
-    public void sendTo(int index, Object message)throws IndexOutOfBoundsException {
+    public void sendTo(int index, Object message) throws IndexOutOfBoundsException {
         clientList.get(index).write(message);
     }
 
-    public void sendToAll(Object message){
-        for(ClientConnection client : clientList)
+    public void sendToAll(Object message) {
+        for (ClientConnection client : clientList)
             client.write(message);
     }
 

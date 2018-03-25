@@ -18,28 +18,23 @@ public class Blockchain implements BlockchainInterface {
 
     private static Blockchain blockchain;
 
-    private Blockchain(){
+    private Blockchain() {
         currentTransactions = instantiateTransactionList();
         //creating the 'genesis' block
         lastBlock = newBlock(previousHash, proof);
 
-        try{
+        try {
             server = Server.getServer();
-
-//            Thread t = new Thread(server);
-//            t.start();
-
             client = new Client();
 
-
-        } catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Error starting communication");
         }
 
     }
 
-    public static Blockchain getBlockchain(){
-        if(blockchain == null){
+    public static Blockchain getBlockchain() {
+        if (blockchain == null) {
             blockchain = new Blockchain();
         }
         return blockchain;
@@ -48,23 +43,22 @@ public class Blockchain implements BlockchainInterface {
     /**
      * This is the function for creating a new block
      *
-     * @param proof the proof of work
+     * @param proof        the proof of work
      * @param previousHash the previous hash
      * @return the new Block
      */
     @Override
     public Block newBlock(String previousHash, int proof) {
-        Block block =  new Block(currentTransactions, previousHash, proof);
+        Block block = new Block(currentTransactions, previousHash, proof);
         currentTransactions = instantiateTransactionList();
         chain.add(block);
         return block;
     }
 
     /**
-     *
-     * @param sender the person sending the transaction
+     * @param sender    the person sending the transaction
      * @param recipient the person receiving the transaction
-     * @param message the message being sent
+     * @param message   the message being sent
      */
     @Override
     public void newTransaction(String sender, String recipient, String message) {
@@ -78,12 +72,11 @@ public class Blockchain implements BlockchainInterface {
      * @return
      */
     @Override
-    public String hash(Block block){
+    public String hash(Block block) {
         return Helpers.getEncryptedJSON(block);
     }
 
     /**
-     *
      * @return the last block
      */
     @Override
@@ -100,7 +93,7 @@ public class Blockchain implements BlockchainInterface {
     public int proofOfWork(int previousProof) {
 
         int proof = 0;
-        while(!validateProof(previousProof, proof)){
+        while (!validateProof(previousProof, proof)) {
             proof += 1;
         }
 
@@ -118,7 +111,7 @@ public class Blockchain implements BlockchainInterface {
     public boolean validateProof(int previousProof, int proof) {
         String guess = previousProof + "" + proof;
         String guessHash = Helpers.hashString(guess);
-        return guessHash.substring(0,4).compareTo("0000") == 0;
+        return guessHash.substring(0, 4).compareTo("0000") == 0;
     }
 
     @Override
@@ -133,18 +126,18 @@ public class Blockchain implements BlockchainInterface {
     }
 
     /**
-     *
      * @return an empty ArrayList of Transactions
      */
-    public ArrayList<Transaction> instantiateTransactionList(){
+    public ArrayList<Transaction> instantiateTransactionList() {
         return new ArrayList<Transaction>();
     }
 
     /**
      * Start up the blockchain
+     *
      * @param args
      */
-    public static void main(String[] args){
+    public static void main(String[] args) {
         blockchain = Blockchain.getBlockchain();
     }
 
