@@ -46,7 +46,6 @@ public class Server{
                 while(true){
                     try{
                         Socket s = listener.accept();
-                        ClientConnection conn = new ClientConnection(s, clientNumber);
                         clientList.add(new ClientConnection(s, clientNumber));
                     }
                     catch(Exception e){
@@ -56,7 +55,7 @@ public class Server{
             }
         };
 
-//        accept.setDaemon(true);
+        accept.setDaemon(true);
         accept.start();
         Thread messageHandling = new Thread() {
             public void run(){
@@ -71,7 +70,7 @@ public class Server{
             }
         };
 
-//        messageHandling.setDaemon(true);
+        messageHandling.setDaemon(true);
         messageHandling.start();
     }
 
@@ -103,10 +102,9 @@ public class Server{
             this.socket = socket;
             this.clientNumber = clientNumber;
 
+            out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
             log("ClientConnection");
-
-            out = new ObjectOutputStream(socket.getOutputStream());
 
 
             log("New connection with client# " + clientNumber + " at " + socket);

@@ -65,7 +65,7 @@ public class Client {
             }
         };
 
-//        messageHandling.setDaemon(true);
+        messageHandling.setDaemon(true);
         messageHandling.start();
         // Add Listeners
         dataField.addActionListener(new ActionListener() {
@@ -127,7 +127,7 @@ public class Client {
                 }
             };
 
-//            read.setDaemon(true);
+            read.setDaemon(true);
             read.start();
         }
 
