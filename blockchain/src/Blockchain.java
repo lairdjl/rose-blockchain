@@ -61,7 +61,7 @@ public class Blockchain implements BlockchainInterface {
      * @param message   the message being sent
      */
     @Override
-    public void newTransaction(String sender, String recipient, String message) {
+    public void newTransaction(String sender, String recipient, Object message) {
         currentTransactions.add(Transaction.newTransaction(sender, recipient, message));
 
     }

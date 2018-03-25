@@ -1,15 +1,18 @@
+import com.google.gson.Gson;
+
 public class Transaction {
 
-    private String sender, recipient, message;
-
-    public static Transaction newTransaction(String sender, String recipient, String message){
-        return new Transaction(sender, recipient, message);
+    String sender, recipient;
+    Object obj;
+    private static Gson gson = new Gson();
+    public static Transaction newTransaction(String sender, String recipient, Object obj){
+        return new Transaction(sender, recipient, obj);
     }
 
-    public Transaction(String sender, String recipient, String message){
+    public Transaction(String sender, String recipient, Object message){
         this.sender = sender;
         this.recipient = recipient;
-        this.message = message;
+        this.obj = message;
     }
 
     /**
@@ -32,8 +35,8 @@ public class Transaction {
      *
      * @return the message sent in String format
      */
-    public String getMessage(){
-        return this.message;
+    public Object getTransactionData(){
+        return this.obj;
     }
 
     /** TODO:Use a library like gson in order to keep format consistency instead of manually making it.
@@ -41,6 +44,8 @@ public class Transaction {
      * @return the transaction in JSON format
      */
     public String getTransaction(){
-        return  "{sender: "+ this.sender + ",recipient:" + this.recipient + ",message:" + this.message +"}";
+        return gson.toJson(this);
+//        return  "{sender: "+ this.sender + ",recipient:" + this.recipient + ",object:" +  +"}";
     }
+
 }

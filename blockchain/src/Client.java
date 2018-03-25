@@ -78,17 +78,6 @@ public class Client {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Action performed");
                 server.write(dataField.getText());
-//                String response;
-//                try {
-//                    response = server.in.readObject().toString();
-//                    if (response.compareTo(".q") == 0) {
-//                        System.exit(0);
-//                    }
-//                } catch (Exception ex) {
-//                    response = "Error: " + ex;
-//                }
-//                messageArea.append(response + "\n");
-//                dataField.selectAll();
             }
         });
     }

@@ -30,7 +30,7 @@ public interface BlockchainInterface {
      * @param recipient the person receiving the transaction
      * @param message the message being sent
      */
-    void newTransaction(String sender, String recipient, String message);
+    void newTransaction(String sender, String recipient, Object message);
 
     /**
      * This is the hashing function for the blockchain
