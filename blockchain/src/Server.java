@@ -112,7 +112,6 @@ public class Server {
                             Object obj = in.readObject();
                             if (obj != null || obj.toString().compareTo("") != 0) {
                                 messages.put(obj);
-//                                log(obj);
                                 sendToAll(obj);
                             }
                         } catch (Exception e) {
