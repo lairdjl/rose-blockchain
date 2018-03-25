@@ -1,9 +1,12 @@
+import com.google.gson.Gson;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -22,6 +25,8 @@ public class Client {
     private ServerConnection server;
     private LinkedBlockingQueue<Object> messages;
     private Socket socket;
+
+    private static Gson gson = new Gson();
 
     /**
      * Constructs the client by laying out the GUI and registering a
@@ -55,7 +60,6 @@ public class Client {
                     try {
                         Object message = messages.take();
                         // Do some handling here...
-                        System.out.println("Message Received: " + message);
                         messageArea.append(message + "\n");
                     } catch (InterruptedException e) {
                     }
@@ -77,7 +81,9 @@ public class Client {
              */
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Action performed");
-                server.write(dataField.getText());
+
+                JSONObject jsonObject = new JSONObject(dataField.getText());
+                server.write(jsonObject.getJSONTransaction());
             }
         });
     }
@@ -128,10 +134,32 @@ public class Client {
 
     }
 
+    /**
+     *
+     * @param obj the object being sent to the server
+     */
     public void send(Object obj) {
         server.write(obj);
     }
 
+
+    /**
+     * An object for transactions
+     */
+    private class JSONObject{
+        InetAddress sender = socket.getInetAddress();
+        String reciever = "test";
+        Object obj;
+
+        JSONObject(Object obj){
+            this.obj = obj;
+        }
+
+        String getJSONTransaction(){
+            return gson.toJson(this);
+        }
+
+    }
 
     /**
      * Runs the client application.

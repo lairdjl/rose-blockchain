@@ -12,11 +12,12 @@ public class Blockchain implements BlockchainInterface {
     private Block lastBlock;
     private int proof = 100;
     private String previousHash = "1";
-    private Server server;
+    private static Server server;
     private Client client;
     private ArrayList<String> nodeList = new ArrayList<String>();
 
-    private static Blockchain blockchain;
+//    private static Blockchain  ;
+    private static final Blockchain blockchain = new Blockchain();;
 
     private Blockchain() {
         currentTransactions = instantiateTransactionList();
@@ -24,7 +25,7 @@ public class Blockchain implements BlockchainInterface {
         lastBlock = newBlock(previousHash, proof);
 
         try {
-            server = Server.getServer();
+            server = Server.getInstance();
             client = new Client();
 
         } catch (Exception e) {
@@ -33,10 +34,7 @@ public class Blockchain implements BlockchainInterface {
 
     }
 
-    public static Blockchain getBlockchain() {
-        if (blockchain == null) {
-            blockchain = new Blockchain();
-        }
+    public static Blockchain getInstance() {
         return blockchain;
     }
 
@@ -138,7 +136,7 @@ public class Blockchain implements BlockchainInterface {
      * @param args
      */
     public static void main(String[] args) {
-        blockchain = Blockchain.getBlockchain();
+        Blockchain.getInstance();
     }
 
 }

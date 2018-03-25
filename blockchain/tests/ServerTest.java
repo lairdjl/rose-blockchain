@@ -6,7 +6,7 @@ class ServerTest {
     Client client;
     @Test
     void getServer() {
-        server = Server.getServer();
+        server = Server.getInstance();
         assert(server != null);
     }
 

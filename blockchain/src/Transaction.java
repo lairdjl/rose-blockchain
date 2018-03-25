@@ -9,10 +9,10 @@ public class Transaction {
         return new Transaction(sender, recipient, obj);
     }
 
-    public Transaction(String sender, String recipient, Object message){
+    public Transaction(String sender, String recipient, Object obj){
         this.sender = sender;
         this.recipient = recipient;
-        this.obj = message;
+        this.obj = obj;
     }
 
     /**

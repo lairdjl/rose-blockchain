@@ -28,14 +28,22 @@ public class Server {
      * messages.  It is certainly not necessary to do this.
      */
 
-    private static Server server;
+//    private static Server server;
+    private static final Server server = new Server();
+    private static Blockchain b;
     private ServerSocket listener;
     private ArrayList<ClientConnection> clientList;
     private LinkedBlockingQueue<Object> messages;
 
-    private Server() throws Exception {
+    private Server() {
         log("The server is running.");
-        listener = new ServerSocket(9898);
+        b = Blockchain.getInstance();
+        try{
+            listener = new ServerSocket(9898);
+        }catch(Exception e){
+            e.printStackTrace();
+            return;
+        }
         clientList = new ArrayList<ClientConnection>();
         messages = new LinkedBlockingQueue<Object>();
 
@@ -73,15 +81,7 @@ public class Server {
         messageHandling.start();
     }
 
-    public static Server getServer() {
-        if (server == null) {
-            try {
-                server = new Server();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
+    public static Server getInstance() {
         return server;
     }
 

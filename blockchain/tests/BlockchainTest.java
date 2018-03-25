@@ -5,20 +5,20 @@ class BlockchainTest {
 
     @Test
     void createBlockchain(){
-        blockchain = Blockchain.getBlockchain();
+        blockchain = Blockchain.getInstance();
         assert(true);
     }
 
     @Test
     void newTransaction() {
-        blockchain = Blockchain.getBlockchain();
+        blockchain = Blockchain.getInstance();
         blockchain.newTransaction("bob","joe", "hello world");
         blockchain.newTransaction("joe","bob", "communicating thru blockchain!");
     }
 
     @Test
     void newBlock() {
-        blockchain = Blockchain.getBlockchain();
+        blockchain = Blockchain.getInstance();
 //        blockchain.newTransaction("bob","joe", "hello world");
 //        blockchain.newTransaction("joe","bob", "communicating thru blockchain!");
         assert(blockchain.mine());
@@ -38,7 +38,7 @@ class BlockchainTest {
 
     @Test
     void lastBlock() {
-        blockchain = Blockchain.getBlockchain();
+        blockchain = Blockchain.getInstance();
         blockchain.newTransaction("bob","joe", "hello world");
         blockchain.newTransaction("joe","bob", "communicating thru blockchain!");
         assert(blockchain.mine());
