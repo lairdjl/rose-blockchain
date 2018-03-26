@@ -1,5 +1,7 @@
 //package Blockchain;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 /**
@@ -46,6 +48,9 @@ public class Blockchain implements BlockchainInterface {
         Block block = new Block(currentTransactions, previousHash, proof);
         currentTransactions.clear();
         chain.add(block);
+        Gson gson = new Gson();
+        String printed = gson.toJson(chain);
+        System.out.println(printed);
         return block;
     }
 
@@ -56,6 +61,7 @@ public class Blockchain implements BlockchainInterface {
      */
     @Override
     public void newTransaction(String sender, String recipient, Object message) {
+
         currentTransactions.add(Transaction.newTransaction(sender, recipient, message));
     }
 

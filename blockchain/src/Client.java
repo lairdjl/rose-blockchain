@@ -80,8 +80,6 @@ public class Client {
              * streams and windows.
              */
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Action performed");
-
                 JSONObject jsonObject = new JSONObject(dataField.getText());
                 server.write(jsonObject.getJSONTransaction());
             }
@@ -148,7 +146,7 @@ public class Client {
      */
     private class JSONObject{
         InetAddress sender = socket.getInetAddress();
-        String reciever = "test";
+        String receiver = "test";
         Object obj;
 
         JSONObject(Object obj){

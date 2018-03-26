@@ -21,7 +21,7 @@ public class Block {
     private int proof;
 
     public Block(ArrayList<Transaction> transactions, String previousHash, int proof){
-        this.transactions = transactions;
+        this.transactions = (ArrayList<Transaction>) transactions.clone();
         this.previousHash = previousHash;
         this.proof = proof;
     }

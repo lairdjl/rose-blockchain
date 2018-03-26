@@ -70,6 +70,7 @@ public class Server {
         accept.start();
         Thread messageHandling = new Thread() {
             public void run() {
+                Blockchain blockchain = Blockchain.getInstance();
                 while (true) {
                     try {
                         Object message = messages.take();
@@ -78,9 +79,9 @@ public class Server {
                         JsonObject jobject = jelement.getAsJsonObject();
 
                         String sender = jobject.get("sender").toString();
-                        String reciever = jobject.get("reciever").toString();
+                        String receiver = jobject.get("receiver").toString();
                         Object obj = jobject.get("obj");
-                        Blockchain.getInstance().newTransaction(sender,reciever,obj);
+                        blockchain.newTransaction(sender,receiver,obj);
                         log("Message Received: " + message);
                     } catch (InterruptedException e) {
                     }
@@ -93,8 +94,9 @@ public class Server {
 
         Thread mining = new Thread() {
             public void run() {
+                Blockchain blockchain = Blockchain.getInstance();
+
                 while (true) {
-                    Blockchain blockchain = Blockchain.getInstance();
                     if(blockchain.currentTransactions.size() > 0){
                         blockchain.mine();
 
