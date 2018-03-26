@@ -33,7 +33,7 @@ public class Blockchain implements BlockchainInterface {
 
         try {
             server = Server.getInstance();
-            client = new Client();
+            client = new Client(Helpers.IP());
 
         } catch (Exception e) {
             System.out.println("Error starting communication");

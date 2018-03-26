@@ -13,6 +13,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import static helpers.Helpers.DEFAULT_PORT;
+
 /**
  * A communication program which accepts requests from clientList to
  * capitalize strings.  When clientList connect, a new thread is
@@ -43,7 +45,7 @@ public class Server {
     private Server() {
         log("The communication is running.");
         try{
-            listener = new ServerSocket(9898);
+            listener = new ServerSocket(DEFAULT_PORT);
         }catch(Exception e){
             e.printStackTrace();
             return;

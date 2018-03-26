@@ -5,10 +5,14 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.math.BigInteger;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Enumeration;
 
 
 public class Helpers{
@@ -17,6 +21,9 @@ public class Helpers{
     public static final boolean DEBUG = true;
     private static Gson gson = new Gson();
     private static MessageDigest md;
+
+    public static final int DEFAULT_PORT = 9898;
+    public static final String DEFAULT_SERVER = "";
 
 
     public static String getJSON(Object object){
@@ -49,6 +56,54 @@ public class Helpers{
         return prettyJson;
     }
 
+
+    public static String getExternalAddress(){
+        String ip = "-1";
+        try {
+            URL whatismyip = new URL("http://checkip.amazonaws.com");
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    whatismyip.openStream()));
+
+            ip = in.readLine(); //you get the IP as a String
+        }
+        catch (Exception e){
+
+        }finally {
+            return ip;
+        }
+
+    }
+    public static String IP()
+    {
+        String IP_address = "";
+        int count = 0 ;
+        try{
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements())
+            {
+                NetworkInterface current = interfaces.nextElement();
+                //  System.out.println(current);
+                if (!current.isUp() || current.isLoopback() || current.isVirtual()) continue;
+                Enumeration<InetAddress> addresses = current.getInetAddresses();
+                while (addresses.hasMoreElements()){
+                    InetAddress current_addr = addresses.nextElement();
+                    if (current_addr.isLoopbackAddress()) continue;
+                    if (current_addr instanceof Inet4Address &&  count == 0)
+                    {
+                        IP_address = current_addr.getHostAddress() ;
+                        System.out.println(current_addr.getHostAddress());
+                        count++;
+                        break;
+                    }
+                }
+            }
+        }
+        catch(SocketException SE)
+        {
+            SE.printStackTrace();
+        }
+        return  IP_address;
+    }
 
     public static String getEncryptedJSON(Object object){
             return hashString(getJSON(object));

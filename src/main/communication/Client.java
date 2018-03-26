@@ -15,6 +15,9 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static helpers.Helpers.DEFAULT_PORT;
+import static helpers.Helpers.DEFAULT_SERVER;
+
 /**
  * A simple Swing-based client for the capitalization communication.
  * It has a main frame window with a text field for entering
@@ -30,34 +33,37 @@ public class Client {
     private ServerConnection server;
     private LinkedBlockingQueue<Object> messages;
     private Socket socket;
+    private String serverAddress;
+    private int port;
 
     private static Gson gson = new Gson();
+//    private static final Client client = new Client();
 
     /**
      * Constructs the client by laying out the GUI and registering a
      * listener with the textfield so that pressing Enter in the
      * listener sends the textfield contents to the communication.
      */
-    public Client() throws Exception {
+    public Client(){
+        this(DEFAULT_SERVER, DEFAULT_PORT);
+    }
 
-        messages = new LinkedBlockingQueue<Object>();
+    public Client(String serverAddress){
+        this(serverAddress, DEFAULT_PORT);
+    }
 
-        // Layout GUI
-        messageArea.setEditable(false);
-        frame.getContentPane().add(dataField, "North");
-        frame.getContentPane().add(new JScrollPane(messageArea), "Center");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
+    public Client(String serverAddress, int port){
+        this.serverAddress = serverAddress;
+        this.port = port;
 
-        String serverAddress = JOptionPane.showInputDialog(
-                frame,
-                "Enter IP Address of the communication.Server:",
-                "Welcome to the blockchain.Blockchain client",
-                JOptionPane.QUESTION_MESSAGE);
+        this.messages = new LinkedBlockingQueue<Object>();
+        try{
+            this.socket = new Socket(serverAddress, port);
+            this.server = new ServerConnection(socket);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
-        socket = new Socket(serverAddress, 9898);
-        server = new ServerConnection(socket);
 
         Thread messageHandling = new Thread() {
             public void run() {
@@ -91,9 +97,22 @@ public class Client {
                 server.write(jsonObject.getJSONTransaction());
             }
         });
+        // Layout GUI
+        messageArea.setEditable(false);
+        frame.getContentPane().add(dataField, "North");
+        frame.getContentPane().add(new JScrollPane(messageArea), "Center");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 
-
+    private void getServerAddress(){
+         this.serverAddress = JOptionPane.showInputDialog(
+                frame,
+                "Enter IP Address of the Server:",
+                "Welcome to the blockchain.Blockchain client",
+                JOptionPane.QUESTION_MESSAGE);
+    }
 
     /**
      * Implements the connection logic by prompting the end user for
