@@ -1,15 +1,18 @@
 package communication;
 
+import blockchain.Block;
+import blockchain.Blockchain;
 import com.google.gson.Gson;
+import helpers.Helpers;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -71,6 +74,8 @@ public class Client {
 
         messageHandling.setDaemon(true);
         messageHandling.start();
+//        Blockchain blockchain = Blockchain.getInstance();
+//        messageArea.append(Helpers.toPrettyFormat(blockchain.getBlockchainJSON()));
         // Add Listeners
         dataField.addActionListener(new ActionListener() {
             /**
@@ -87,6 +92,7 @@ public class Client {
             }
         });
     }
+
 
 
     /**
@@ -113,7 +119,9 @@ public class Client {
                         try {
                             Object obj = in.readObject();
                             messages.put(obj);
-                        } catch (Exception e) {
+                        }catch (SocketException e) {
+                            break;
+                        }catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -167,7 +175,6 @@ public class Client {
     public static void main(String[] args) {
         try {
             Client client = new Client();
-//            client.communication.write("hello");
         } catch (Exception e) {
             e.printStackTrace();
         }

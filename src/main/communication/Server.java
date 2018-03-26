@@ -1,5 +1,6 @@
 package communication;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -34,14 +35,11 @@ public class Server {
      * messages.  It is certainly not necessary to do this.
      */
 
-//    private static communication.Server communication;
     private static final Server server = new Server();
     private ServerSocket listener;
     private CopyOnWriteArrayList<ClientConnection> clientList;
     private LinkedBlockingQueue<Object> messages;
 
-//    private Gson gson = new Gson();
-//    private JSONParser parser;
     private Server() {
         log("The communication is running.");
         try{
@@ -61,6 +59,7 @@ public class Server {
                     try {
                         Socket s = listener.accept();
                         clientList.add(new ClientConnection(s, clientNumber));
+                        clientNumber++;
                     } catch (Exception e) {
                         log("error");
                     }
@@ -144,9 +143,17 @@ public class Server {
                                 messages.put(obj);
                                 sendToAll(obj);
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        }catch (Exception e) {
+                            try{
+                                socket.close();
+                                System.out.println("Client# "+clientNumber +" connection lost");
+                            }catch (Exception e2){
+                                e.printStackTrace();
+                            }finally {
+                                break;
+                            }
+                            }
+                            break;
                     }
                 }
             };
