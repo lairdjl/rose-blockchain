@@ -12,8 +12,10 @@ class BlockchainTest {
     @Test
     void newTransaction() {
         blockchain = Blockchain.getInstance();
+
         blockchain.newTransaction("bob","joe", "hello world");
         blockchain.newTransaction("joe","bob", "communicating thru blockchain!");
+
     }
 
     @Test
@@ -42,9 +44,16 @@ class BlockchainTest {
         blockchain.newTransaction("bob","joe", "hello world");
         blockchain.newTransaction("joe","bob", "communicating thru blockchain!");
         assert(blockchain.mine());
+        blockchain.newTransaction("bob","joe", "hello world");
+        blockchain.newTransaction("joe","bob", "communicating thru blockchain!");
+        assert(blockchain.mine());
+        blockchain.newTransaction("bob","joe", "test 3");
+        blockchain.newTransaction("joe","bob", "test 4");
+        blockchain.newTransaction("joe","bob", "test 5");
+        assert(blockchain.mine());
         Block lastBlock = blockchain.lastBlock();
         assert(lastBlock!=null);
-        assert(lastBlock.getTransactions().length == 3);
+        assert(lastBlock.getTransactions().length == 4);
         blockchain.newTransaction("bob","joe", "test 3");
         blockchain.newTransaction("joe","bob", "test 4");
         blockchain.newTransaction("joe","bob", "test 5");
