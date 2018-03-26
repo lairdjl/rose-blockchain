@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 ;
 
@@ -12,8 +12,7 @@ public interface BlockchainInterface {
     These are the variables that are needed for a blockchain to properly work.
      */
     //The 'chain' itself
-    ArrayList<Block> chain = new ArrayList<Block>();
-
+    CopyOnWriteArrayList<Block> chain = new CopyOnWriteArrayList<Block>();
 
     /**
      * This is the function for creating a new block
@@ -31,7 +30,7 @@ public interface BlockchainInterface {
      * @param recipient the person receiving the transaction
      * @param message the message being sent
      */
-    void newTransaction(String sender, String recipient, String message);
+    void newTransaction(String sender, String recipient, Object message);
 
     /**
      * This is the hashing function for the blockchain

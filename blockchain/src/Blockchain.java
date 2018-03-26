@@ -1,50 +1,69 @@
 //package Blockchain;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  *
  */
 public class Blockchain implements BlockchainInterface {
+//    private LinkedBlockingQueue<Object> messages;
 
-    //A list of transactions that will be added to the current block.
-    public ArrayList<Transaction> currentTransactions;
+    public static final LinkedBlockingQueue<Transaction> currentTransactions = new LinkedBlockingQueue<Transaction>();
     private Block lastBlock;
     private int proof = 100;
     private String previousHash = "1";
+    private Client client;
+    private Server server;
 
-    public Blockchain(){
-        currentTransactions = instantiateTransactionList();
+    private static final Gson gson = new Gson();
+    private static final Blockchain blockchain = new Blockchain();
+
+
+    private Blockchain() {
         //creating the 'genesis' block
         lastBlock = newBlock(previousHash, proof);
+
+        try {
+            server = Server.getInstance();
+            client = new Client();
+
+        } catch (Exception e) {
+            System.out.println("Error starting communication");
+        }
+
     }
 
 
     /**
      * This is the function for creating a new block
      *
-     * @param proof the proof of work
+     * @param proof        the proof of work
      * @param previousHash the previous hash
      * @return the new Block
      */
     @Override
     public Block newBlock(String previousHash, int proof) {
-        Block block =  new Block(currentTransactions, previousHash, proof);
-        currentTransactions = instantiateTransactionList();
+        Block block = new Block(currentTransactions, previousHash, proof);
+        currentTransactions.clear();
         chain.add(block);
+        String printed = gson.toJson(chain);
+        System.out.println(printed);
         return block;
     }
 
+
     /**
-     *
-     * @param sender the person sending the transaction
+     * @param sender    the person sending the transaction
      * @param recipient the person receiving the transaction
-     * @param message the message being sent
+     * @param message   the message being sent
      */
     @Override
-    public void newTransaction(String sender, String recipient, String message) {
-        currentTransactions.add(Transaction.newTransaction(sender, recipient, message));
+    public void newTransaction(String sender, String recipient, Object message) {
 
+        currentTransactions.add(Transaction.newTransaction(sender, recipient, message));
     }
 
 
@@ -53,18 +72,19 @@ public class Blockchain implements BlockchainInterface {
      * @return
      */
     @Override
-    public String hash(Block block){
+    public String hash(Block block) {
         return Helpers.getEncryptedJSON(block);
     }
 
+
     /**
-     *
      * @return the last block
      */
     @Override
     public Block lastBlock() {
         return this.lastBlock;
     }
+
 
     /**
      * The proof of work algorithm goes here
@@ -75,13 +95,14 @@ public class Blockchain implements BlockchainInterface {
     public int proofOfWork(int previousProof) {
 
         int proof = 0;
-        while(!validateProof(previousProof, proof)){
+        while (!validateProof(previousProof, proof)) {
             proof += 1;
         }
 
         return proof;
 
     }
+
 
     /**
      * Validates the Proof: Does hash(last_proof, proof) contain 4 leading zeroes?
@@ -93,8 +114,17 @@ public class Blockchain implements BlockchainInterface {
     public boolean validateProof(int previousProof, int proof) {
         String guess = previousProof + "" + proof;
         String guessHash = Helpers.hashString(guess);
-        return guessHash.substring(0,4).compareTo("0000") == 0;
+        return guessHash.substring(0, 4).compareTo("0000") == 0;
     }
+
+
+    /**
+     * @return the blockchain singleton
+     */
+    public static Blockchain getInstance() {
+        return blockchain;
+    }
+
 
     @Override
     public boolean mine() {
@@ -102,16 +132,18 @@ public class Blockchain implements BlockchainInterface {
         int proof = this.proofOfWork(lastProof);
         this.newTransaction(Helpers.MINED_ADDRESS, "TEST_ADDRESS", "Mined Block");
         previousHash = this.hash(this.lastBlock);
-
         this.lastBlock = this.newBlock(previousHash, proof);
         return true;
     }
 
+
     /**
+     * Start up the blockchain
      *
-     * @return an empty ArrayList of Transactions
+     * @param args
      */
-    public ArrayList<Transaction> instantiateTransactionList(){
-        return new ArrayList<Transaction>();
+    public static void main(String[] args) {
+        Blockchain.getInstance();
     }
+
 }
