@@ -7,6 +7,9 @@ import helpers.Helpers;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static helpers.Helpers.DEBUG;
+import static helpers.Helpers.toPrettyFormat;
+
 /**
  *
  */
@@ -51,8 +54,10 @@ public class Blockchain implements BlockchainInterface {
         Block block = new Block(currentTransactions, previousHash, proof);
         currentTransactions.clear();
         chain.add(block);
-        String printed = gson.toJson(chain);
-        System.out.println(printed);
+        if(DEBUG){
+            printBlockchainJSON();
+        }
+
         return block;
     }
 
@@ -138,7 +143,17 @@ public class Blockchain implements BlockchainInterface {
         return true;
     }
 
+    public static String getBlockchainJSON(){
+        String print = "{blocks:";
+        print += gson.toJson(chain);
+        print += "}";
+        return print;
+    }
 
+    public static void printBlockchainJSON(){
+        System.out.println(toPrettyFormat(getBlockchainJSON()));
+
+    }
     /**
      * Start up the blockchain
      *
