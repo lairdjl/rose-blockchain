@@ -3,25 +3,26 @@
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  *
  */
 public class Blockchain implements BlockchainInterface {
+//    private LinkedBlockingQueue<Object> messages;
 
-    public static final ArrayList<Transaction> currentTransactions = new ArrayList<Transaction>();
+    public static final LinkedBlockingQueue<Transaction> currentTransactions = new LinkedBlockingQueue<Transaction>();
     private Block lastBlock;
     private int proof = 100;
     private String previousHash = "1";
     private Client client;
     private Server server;
 
+    private static final Gson gson = new Gson();
     private static final Blockchain blockchain = new Blockchain();
-//    private static final Server server = Server.getInstance();
 
 
     private Blockchain() {
-//        currentTransactions.cl
         //creating the 'genesis' block
         lastBlock = newBlock(previousHash, proof);
 
@@ -48,11 +49,11 @@ public class Blockchain implements BlockchainInterface {
         Block block = new Block(currentTransactions, previousHash, proof);
         currentTransactions.clear();
         chain.add(block);
-        Gson gson = new Gson();
         String printed = gson.toJson(chain);
         System.out.println(printed);
         return block;
     }
+
 
     /**
      * @param sender    the person sending the transaction
@@ -75,6 +76,7 @@ public class Blockchain implements BlockchainInterface {
         return Helpers.getEncryptedJSON(block);
     }
 
+
     /**
      * @return the last block
      */
@@ -82,6 +84,7 @@ public class Blockchain implements BlockchainInterface {
     public Block lastBlock() {
         return this.lastBlock;
     }
+
 
     /**
      * The proof of work algorithm goes here
@@ -100,6 +103,7 @@ public class Blockchain implements BlockchainInterface {
 
     }
 
+
     /**
      * Validates the Proof: Does hash(last_proof, proof) contain 4 leading zeroes?
      *
@@ -115,12 +119,12 @@ public class Blockchain implements BlockchainInterface {
 
 
     /**
-     *
      * @return the blockchain singleton
      */
     public static Blockchain getInstance() {
         return blockchain;
     }
+
 
     @Override
     public boolean mine() {
@@ -128,7 +132,6 @@ public class Blockchain implements BlockchainInterface {
         int proof = this.proofOfWork(lastProof);
         this.newTransaction(Helpers.MINED_ADDRESS, "TEST_ADDRESS", "Mined Block");
         previousHash = this.hash(this.lastBlock);
-
         this.lastBlock = this.newBlock(previousHash, proof);
         return true;
     }

@@ -98,7 +98,7 @@ public class Server {
 
                 while (true) {
                     if(blockchain.currentTransactions.size() > 0){
-                        blockchain.mine();
+                        boolean wait = blockchain.mine();
 
                     }
                 }

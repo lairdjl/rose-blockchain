@@ -44,7 +44,7 @@ class BlockchainTest {
         assert(blockchain.mine());
         Block lastBlock = blockchain.lastBlock();
         assert(lastBlock!=null);
-        assert(lastBlock.getTransactions().size() == 3);
+        assert(lastBlock.getTransactions().length == 3);
         blockchain.newTransaction("bob","joe", "test 3");
         blockchain.newTransaction("joe","bob", "test 4");
         blockchain.newTransaction("joe","bob", "test 5");
@@ -53,7 +53,7 @@ class BlockchainTest {
         /**
          * There are 4 transactions because the mined block is being added into the transaction list currently.
          */
-        assert(lastBlock.getTransactions().size() == 4);
+        assert(lastBlock.getTransactions().length == 4);
     }
 
     @Test

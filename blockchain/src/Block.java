@@ -1,8 +1,8 @@
-import java.util.ArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Block {
 
-    public ArrayList<Transaction> getTransactions() {
+    public Object[] getTransactions() {
         return transactions;
     }
 
@@ -15,13 +15,13 @@ public class Block {
     }
 
     //    int index = -1;
-    private ArrayList<Transaction> transactions;
+    private Object[] transactions;
     private String previousHash;
 
     private int proof;
 
-    public Block(ArrayList<Transaction> transactions, String previousHash, int proof){
-        this.transactions = (ArrayList<Transaction>) transactions.clone();
+    public Block(LinkedBlockingQueue<Transaction> transactions, String previousHash, int proof){
+        this.transactions =  transactions.toArray();
         this.previousHash = previousHash;
         this.proof = proof;
     }
