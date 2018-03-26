@@ -90,6 +90,21 @@ public class Server {
 
         messageHandling.setDaemon(true);
         messageHandling.start();
+
+        Thread mining = new Thread() {
+            public void run() {
+                while (true) {
+                    Blockchain blockchain = Blockchain.getInstance();
+                    if(blockchain.currentTransactions.size() > 0){
+                        blockchain.mine();
+
+                    }
+                }
+            }
+        };
+
+        mining.setDaemon(true);
+        mining.start();
     }
 
     public static synchronized Server getInstance() {

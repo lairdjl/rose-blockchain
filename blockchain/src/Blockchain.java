@@ -124,7 +124,7 @@ public class Blockchain implements BlockchainInterface {
         previousHash = this.hash(this.lastBlock);
 
         this.lastBlock = this.newBlock(previousHash, proof);
-        return mine();
+        return true;
     }
 
 
@@ -134,7 +134,7 @@ public class Blockchain implements BlockchainInterface {
      * @param args
      */
     public static void main(String[] args) {
-        Blockchain.getInstance().mine();
+        Blockchain.getInstance();
     }
 
 }
