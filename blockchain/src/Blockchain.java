@@ -7,20 +7,19 @@ import java.util.ArrayList;
  */
 public class Blockchain implements BlockchainInterface {
 
-    //A list of transactions that will be added to the current block.
-    public ArrayList<Transaction> currentTransactions;
+    public static final ArrayList<Transaction> currentTransactions = new ArrayList<Transaction>();
     private Block lastBlock;
     private int proof = 100;
     private String previousHash = "1";
-    private static Server server;
     private Client client;
-    private ArrayList<String> nodeList = new ArrayList<String>();
+    private Server server;
 
-//    private static Blockchain  ;
-    private static final Blockchain blockchain = new Blockchain();;
+    private static final Blockchain blockchain = new Blockchain();
+//    private static final Server server = Server.getInstance();
+
 
     private Blockchain() {
-        currentTransactions = instantiateTransactionList();
+//        currentTransactions.cl
         //creating the 'genesis' block
         lastBlock = newBlock(previousHash, proof);
 
@@ -34,9 +33,6 @@ public class Blockchain implements BlockchainInterface {
 
     }
 
-    public static Blockchain getInstance() {
-        return blockchain;
-    }
 
     /**
      * This is the function for creating a new block
@@ -48,7 +44,7 @@ public class Blockchain implements BlockchainInterface {
     @Override
     public Block newBlock(String previousHash, int proof) {
         Block block = new Block(currentTransactions, previousHash, proof);
-        currentTransactions = instantiateTransactionList();
+        currentTransactions.clear();
         chain.add(block);
         return block;
     }
@@ -61,7 +57,6 @@ public class Blockchain implements BlockchainInterface {
     @Override
     public void newTransaction(String sender, String recipient, Object message) {
         currentTransactions.add(Transaction.newTransaction(sender, recipient, message));
-
     }
 
 
@@ -112,6 +107,15 @@ public class Blockchain implements BlockchainInterface {
         return guessHash.substring(0, 4).compareTo("0000") == 0;
     }
 
+
+    /**
+     *
+     * @return the blockchain singleton
+     */
+    public static Blockchain getInstance() {
+        return blockchain;
+    }
+
     @Override
     public boolean mine() {
         int lastProof = this.lastBlock.getProof();
@@ -120,15 +124,9 @@ public class Blockchain implements BlockchainInterface {
         previousHash = this.hash(this.lastBlock);
 
         this.lastBlock = this.newBlock(previousHash, proof);
-        return true;
+        return mine();
     }
 
-    /**
-     * @return an empty ArrayList of Transactions
-     */
-    public ArrayList<Transaction> instantiateTransactionList() {
-        return new ArrayList<Transaction>();
-    }
 
     /**
      * Start up the blockchain
@@ -136,7 +134,7 @@ public class Blockchain implements BlockchainInterface {
      * @param args
      */
     public static void main(String[] args) {
-        Blockchain.getInstance();
+        Blockchain.getInstance().mine();
     }
 
 }

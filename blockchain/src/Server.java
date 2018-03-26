@@ -1,9 +1,13 @@
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -30,21 +34,21 @@ public class Server {
 
 //    private static Server server;
     private static final Server server = new Server();
-    private static Blockchain b;
     private ServerSocket listener;
-    private ArrayList<ClientConnection> clientList;
+    private CopyOnWriteArrayList<ClientConnection> clientList;
     private LinkedBlockingQueue<Object> messages;
 
+//    private Gson gson = new Gson();
+//    private JSONParser parser;
     private Server() {
         log("The server is running.");
-        b = Blockchain.getInstance();
         try{
             listener = new ServerSocket(9898);
         }catch(Exception e){
             e.printStackTrace();
             return;
         }
-        clientList = new ArrayList<ClientConnection>();
+        clientList = new CopyOnWriteArrayList<ClientConnection>();
         messages = new LinkedBlockingQueue<Object>();
 
 
@@ -70,6 +74,13 @@ public class Server {
                     try {
                         Object message = messages.take();
                         // Do some handling here...
+                        JsonElement jelement = new JsonParser().parse(message.toString());
+                        JsonObject jobject = jelement.getAsJsonObject();
+
+                        String sender = jobject.get("sender").toString();
+                        String reciever = jobject.get("reciever").toString();
+                        Object obj = jobject.get("obj");
+                        Blockchain.getInstance().newTransaction(sender,reciever,obj);
                         log("Message Received: " + message);
                     } catch (InterruptedException e) {
                     }
@@ -81,7 +92,7 @@ public class Server {
         messageHandling.start();
     }
 
-    public static Server getInstance() {
+    public static synchronized Server getInstance() {
         return server;
     }
 
