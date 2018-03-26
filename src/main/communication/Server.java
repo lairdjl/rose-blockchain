@@ -1,6 +1,4 @@
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+package communication;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -9,12 +7,16 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
+import blockchain.*;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
- * A server program which accepts requests from clientList to
+ * A communication program which accepts requests from clientList to
  * capitalize strings.  When clientList connect, a new thread is
  * started to handle an interactive dialog in which the client
- * sends in a string and the server thread sends back the
+ * sends in a string and the communication thread sends back the
  * capitalized version of the string.
  * <p>
  * The program is runs in an infinite loop, so shutdown in platform
@@ -24,15 +26,15 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class Server {
 
     /**
-     * Application method to run the server runs in an infinite loop
+     * Application method to run the communication runs in an infinite loop
      * listening on port 9898.  When a connection is requested, it
      * spawns a new thread to do the servicing and immediately returns
-     * to listening.  The server keeps a unique client number for each
+     * to listening.  The communication keeps a unique client number for each
      * client that connects just to show interesting logging
      * messages.  It is certainly not necessary to do this.
      */
 
-//    private static Server server;
+//    private static communication.Server communication;
     private static final Server server = new Server();
     private ServerSocket listener;
     private CopyOnWriteArrayList<ClientConnection> clientList;
@@ -41,7 +43,7 @@ public class Server {
 //    private Gson gson = new Gson();
 //    private JSONParser parser;
     private Server() {
-        log("The server is running.");
+        log("The communication is running.");
         try{
             listener = new ServerSocket(9898);
         }catch(Exception e){
@@ -172,7 +174,7 @@ public class Server {
 
     /**
      * Logs a simple message.  In this case we just write the
-     * message to the server applications standard output.
+     * message to the communication applications standard output.
      */
     private static void log(Object message) {
         System.out.println(message);

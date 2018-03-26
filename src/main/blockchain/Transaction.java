@@ -1,3 +1,5 @@
+package blockchain;
+
 import com.google.gson.Gson;
 
 public class Transaction {

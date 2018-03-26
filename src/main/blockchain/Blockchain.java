@@ -1,8 +1,10 @@
-//package Blockchain;
+package blockchain;
 
 import com.google.gson.Gson;
+import communication.Client;
+import communication.Server;
+import helpers.Helpers;
 
-import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -42,7 +44,7 @@ public class Blockchain implements BlockchainInterface {
      *
      * @param proof        the proof of work
      * @param previousHash the previous hash
-     * @return the new Block
+     * @return the new blockchain.Block
      */
     @Override
     public Block newBlock(String previousHash, int proof) {
@@ -130,7 +132,7 @@ public class Blockchain implements BlockchainInterface {
     public boolean mine() {
         int lastProof = this.lastBlock.getProof();
         int proof = this.proofOfWork(lastProof);
-        this.newTransaction(Helpers.MINED_ADDRESS, "TEST_ADDRESS", "Mined Block");
+        this.newTransaction(Helpers.MINED_ADDRESS, "TEST_ADDRESS", "Mined blockchain.Block");
         previousHash = this.hash(this.lastBlock);
         this.lastBlock = this.newBlock(previousHash, proof);
         return true;

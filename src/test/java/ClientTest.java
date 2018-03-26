@@ -1,3 +1,4 @@
+import communication.Client;
 import org.junit.jupiter.api.Test;
 
 class ClientTest {

@@ -1,3 +1,5 @@
+package helpers;
+
 import com.google.gson.Gson;
 
 import java.math.BigInteger;

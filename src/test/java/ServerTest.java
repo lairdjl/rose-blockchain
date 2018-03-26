@@ -1,4 +1,6 @@
+import communication.Client;
 import org.junit.jupiter.api.Test;
+import communication.Server;
 
 class ServerTest {
 

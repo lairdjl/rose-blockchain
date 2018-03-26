@@ -1,3 +1,5 @@
+package blockchain;
+
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Block {

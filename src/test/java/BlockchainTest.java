@@ -1,3 +1,5 @@
+import blockchain.Block;
+import blockchain.Blockchain;
 import org.junit.jupiter.api.Test;
 
 class BlockchainTest {

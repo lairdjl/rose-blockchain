@@ -1,9 +1,11 @@
+package blockchain;
+
 import java.util.concurrent.CopyOnWriteArrayList;
 
 ;
 
 /**
- * Blockchain Implemented using instructions from https://hackernoon.com/learn-blockchains-by-building-one-117428612f46
+ * blockchain.Blockchain Implemented using instructions from https://hackernoon.com/learn-blockchains-by-building-one-117428612f46
  *
  */
 public interface BlockchainInterface {
@@ -12,14 +14,14 @@ public interface BlockchainInterface {
     These are the variables that are needed for a blockchain to properly work.
      */
     //The 'chain' itself
-    CopyOnWriteArrayList<Block> chain = new CopyOnWriteArrayList<Block>();
+    CopyOnWriteArrayList<blockchain.Block> chain = new CopyOnWriteArrayList<Block>();
 
     /**
      * This is the function for creating a new block
      *
      * @param proof the proof of work
      * @param previousHash the previous hash
-     * @return the new Block
+     * @return the new blockchain.Block
      */
     Block newBlock(String previousHash, int proof);
 

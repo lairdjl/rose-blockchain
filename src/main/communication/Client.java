@@ -1,3 +1,5 @@
+package communication;
+
 import com.google.gson.Gson;
 
 import javax.swing.*;
@@ -11,7 +13,7 @@ import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * A simple Swing-based client for the capitalization server.
+ * A simple Swing-based client for the capitalization communication.
  * It has a main frame window with a text field for entering
  * strings and a textarea to see the results of capitalizing
  * them.
@@ -31,7 +33,7 @@ public class Client {
     /**
      * Constructs the client by laying out the GUI and registering a
      * listener with the textfield so that pressing Enter in the
-     * listener sends the textfield contents to the server.
+     * listener sends the textfield contents to the communication.
      */
     public Client() throws Exception {
 
@@ -47,8 +49,8 @@ public class Client {
 
         String serverAddress = JOptionPane.showInputDialog(
                 frame,
-                "Enter IP Address of the Server:",
-                "Welcome to the Blockchain client",
+                "Enter IP Address of the communication.Server:",
+                "Welcome to the blockchain.Blockchain client",
                 JOptionPane.QUESTION_MESSAGE);
 
         socket = new Socket(serverAddress, 9898);
@@ -74,7 +76,7 @@ public class Client {
             /**
              * Responds to pressing the enter key in the textfield
              * by sending the contents of the text field to the
-             * server and displaying the response from the server
+             * communication and displaying the response from the communication
              * in the text area.  If the response is "." we exit
              * the whole application, which closes all sockets,
              * streams and windows.
@@ -89,9 +91,9 @@ public class Client {
 
     /**
      * Implements the connection logic by prompting the end user for
-     * the server's IP address, connecting, setting up streams, and
-     * consuming the welcome messages from the server.  The Capitalizer
-     * protocol says that the server sends three lines of text to the
+     * the communication's IP address, connecting, setting up streams, and
+     * consuming the welcome messages from the communication.  The Capitalizer
+     * protocol says that the communication sends three lines of text to the
      * client immediately after establishing a connection.
      */
 
@@ -134,7 +136,7 @@ public class Client {
 
     /**
      *
-     * @param obj the object being sent to the server
+     * @param obj the object being sent to the communication
      */
     public void send(Object obj) {
         server.write(obj);
@@ -165,7 +167,7 @@ public class Client {
     public static void main(String[] args) {
         try {
             Client client = new Client();
-//            client.server.write("hello");
+//            client.communication.write("hello");
         } catch (Exception e) {
             e.printStackTrace();
         }
