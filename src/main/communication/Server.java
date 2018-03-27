@@ -1,6 +1,10 @@
 package communication;
 
-import java.io.EOFException;
+import blockchain.Blockchain;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -8,10 +12,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
-import blockchain.*;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import static helpers.Helpers.DEFAULT_PORT;
 
@@ -155,7 +155,6 @@ public class Server {
                                 break;
                             }
                             }
-                            break;
                     }
                 }
             };

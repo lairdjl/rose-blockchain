@@ -1,12 +1,10 @@
 package communication;
 
-import blockchain.Block;
-import blockchain.Blockchain;
 import com.google.gson.Gson;
-import helpers.Helpers;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -58,7 +56,7 @@ public class Client {
 
         this.messages = new LinkedBlockingQueue<Object>();
         try{
-            this.socket = new Socket(serverAddress, port);
+            this.socket = new Socket(this.serverAddress, this.port);
             this.server = new ServerConnection(socket);
         }catch (Exception e){
             e.printStackTrace();
