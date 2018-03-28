@@ -109,6 +109,10 @@ public class Helpers{
             return hashString(getJSON(object));
     }
 
+    public static String getSocketIP(Socket socket){
+        return socket.getInetAddress().toString().substring(1);
+    }
+
     public static void log(Object message) {
         System.out.println(message);
     }

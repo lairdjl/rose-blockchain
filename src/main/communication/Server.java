@@ -11,6 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static helpers.Helpers.DEFAULT_PORT;
+import static helpers.Helpers.getSocketIP;
 import static helpers.Helpers.log;
 
 /**
@@ -61,14 +62,14 @@ public class Server {
                         clientList.add(new ClientConnection(s, clientNumber));
                         boolean inList = false;
                         for(ServerConnection conn : Client.serverList){
-                            if(conn.socket.equals(s)){
+                            if(getSocketIP(conn.socket).compareTo(getSocketIP(s)) == 0){
                                 inList = true;
                                 break;
                             }
                         }
                         if(!inList){
                             //TODO:Add connection from client to server here.
-                            String serverAddress = s.getInetAddress().toString();
+                            String serverAddress = getSocketIP(s);
                             System.out.println(serverAddress);
                             Client.addConnection(serverAddress, DEFAULT_PORT);
                         }
