@@ -27,7 +27,7 @@ import static helpers.Helpers.DEFAULT_SERVER;
 public class Client {
 
     private ServerConnection server;
-    private LinkedBlockingQueue<Object> messages;
+    protected static LinkedBlockingQueue<Object> messages;
     private Socket socket;
     private String serverAddress;
     private int port;
@@ -55,7 +55,7 @@ public class Client {
         this.messages = new LinkedBlockingQueue<Object>();
         try{
             this.socket = new Socket(this.serverAddress, this.port);
-            this.server = new ServerConnection(socket,messages);
+            this.server = new ServerConnection(socket);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -92,7 +92,7 @@ public class Client {
     public void addConnection(String serverAddress){
         try{
             Socket socket = new Socket(serverAddress, this.port);
-            server = new ServerConnection(socket,messages);
+            server = new ServerConnection(socket);
 
         }catch (Exception e){
             System.out.println("could not connect to new server");
