@@ -26,14 +26,13 @@ public class Frontend {
     public JTextArea messageArea = new JTextArea(8, 60);
 
     private static Frontend instance;
-    private static ArrayList<ServerConnection> connections = new ArrayList<>();
+//    private static ArrayList<ServerConnection> connections = new ArrayList<>();
     private static Socket socket;
     private static Client client;
 
-    public Frontend(Client client, ServerConnection connection, Socket socket) {
+    public Frontend(Client client, Socket socket) {
 
         this.client = client;
-        this.connections.add(connection);
         this.socket = socket;
 
         // Add Listeners
@@ -47,7 +46,7 @@ public class Frontend {
             public void actionPerformed(ActionEvent e) {
                 log("Action performed");
                 TransactionJSONObject transactionJsonObject = new TransactionJSONObject(socket.getInetAddress(), dataField.getText());
-                for (ServerConnection conn:connections){
+                for (ServerConnection conn: Client.getConnections()){
                     conn.write(transactionJsonObject.getJSONTransaction());
                 }
             }
@@ -56,7 +55,7 @@ public class Frontend {
         connectionField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String ip = dataField.getText().toString();
+                String ip = connectionField.getText().toString();
                 client.addConnection(ip);
             }
         });
