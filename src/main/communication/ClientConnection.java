@@ -26,7 +26,7 @@ public class ClientConnection {
         out = new ObjectOutputStream(socket.getOutputStream());
         in = new ObjectInputStream(socket.getInputStream());
 
-        server.clientList.add(this);
+//        server.clientList.add(this);
         log("New connection with client# " + clientNumber + " at " + socket);
         Thread read = new Thread() {
             public void run() {

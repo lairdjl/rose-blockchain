@@ -40,7 +40,7 @@ public class Server {
 
     private static final Server server = new Server();
     private ServerSocket listener;
-    protected CopyOnWriteArrayList<ClientConnection> clientList;
+    protected static CopyOnWriteArrayList<ClientConnection> clientList;
     protected static LinkedBlockingQueue<Object> messages = new LinkedBlockingQueue<Object>();;
 
     private Server() {
