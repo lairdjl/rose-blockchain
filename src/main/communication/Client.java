@@ -1,8 +1,10 @@
 package communication;
 
 import com.google.gson.Gson;
+import frontend.Frontend;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -24,18 +26,14 @@ import static helpers.Helpers.DEFAULT_SERVER;
  */
 public class Client {
 
-    private JFrame frame = new JFrame("Client");
-    private JTextField dataField = new JTextField(40);
-    private JTextArea messageArea = new JTextArea(8, 60);
-
     private ServerConnection server;
     private LinkedBlockingQueue<Object> messages;
     private Socket socket;
     private String serverAddress;
     private int port;
 
+    Frontend frontend;
     private static Gson gson = new Gson();
-//    private static final Client client = new Client();
 
     /**
      * Constructs the client by laying out the GUI and registering a
@@ -57,11 +55,13 @@ public class Client {
         this.messages = new LinkedBlockingQueue<Object>();
         try{
             this.socket = new Socket(this.serverAddress, this.port);
-            this.server = new ServerConnection(socket);
+            this.server = new ServerConnection(socket,messages);
         }catch (Exception e){
             e.printStackTrace();
         }
 
+
+        Frontend frontend = new Frontend(this.server, this.socket);
 
         Thread messageHandling = new Thread() {
             public void run() {
@@ -69,7 +69,7 @@ public class Client {
                     try {
                         Object message = messages.take();
                         // Do some handling here...
-                        messageArea.append(message + "\n");
+                        frontend.messageArea.append(message + "\n");
                     } catch (InterruptedException e) {
                     }
                 }
@@ -80,84 +80,9 @@ public class Client {
         messageHandling.start();
 //        Blockchain blockchain = Blockchain.getInstance();
 //        messageArea.append(Helpers.toPrettyFormat(blockchain.getBlockchainJSON()));
-        // Add Listeners
-        dataField.addActionListener(new ActionListener() {
-            /**
-             * Responds to pressing the enter key in the textfield
-             * by sending the contents of the text field to the
-             * communication and displaying the response from the communication
-             * in the text area.  If the response is "." we exit
-             * the whole application, which closes all sockets,
-             * streams and windows.
-             */
-            public void actionPerformed(ActionEvent e) {
-                JSONObject jsonObject = new JSONObject(dataField.getText());
-                server.write(jsonObject.getJSONTransaction());
-            }
-        });
-        // Layout GUI
-        messageArea.setEditable(false);
-        frame.getContentPane().add(dataField, "North");
-        frame.getContentPane().add(new JScrollPane(messageArea), "Center");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-    }
-
-    private void getServerAddress(){
-         this.serverAddress = JOptionPane.showInputDialog(
-                frame,
-                "Enter IP Address of the Server:",
-                "Welcome to the blockchain.Blockchain client",
-                JOptionPane.QUESTION_MESSAGE);
-    }
-
-    /**
-     * Implements the connection logic by prompting the end user for
-     * the communication's IP address, connecting, setting up streams, and
-     * consuming the welcome messages from the communication.  The Capitalizer
-     * protocol says that the communication sends three lines of text to the
-     * client immediately after establishing a connection.
-     */
-
-    private class ServerConnection {
-        ObjectInputStream in;
-        ObjectOutputStream out;
-        Socket socket;
-
-        ServerConnection(Socket socket) throws Exception {
-            this.socket = socket;
-            this.out = new ObjectOutputStream(socket.getOutputStream());
-            this.in = new ObjectInputStream(socket.getInputStream());
-
-            Thread read = new Thread() {
-                public void run() {
-                    while (true) {
-                        try {
-                            Object obj = in.readObject();
-                            messages.put(obj);
-                        }catch (SocketException e) {
-                            break;
-                        }catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            };
-
-            read.setDaemon(true);
-            read.start();
-        }
-
-        private void write(Object obj) {
-            try {
-                out.writeObject(obj);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
 
     }
+
 
     /**
      *
@@ -165,25 +90,6 @@ public class Client {
      */
     public void send(Object obj) {
         server.write(obj);
-    }
-
-
-    /**
-     * An object for transactions
-     */
-    private class JSONObject{
-        InetAddress sender = socket.getInetAddress();
-        String receiver = "test";
-        Object obj;
-
-        JSONObject(Object obj){
-            this.obj = obj;
-        }
-
-        String getJSONTransaction(){
-            return gson.toJson(this);
-        }
-
     }
 
     /**

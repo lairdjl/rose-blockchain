@@ -51,6 +51,7 @@ public class Blockchain implements BlockchainInterface {
      */
     @Override
     public Block newBlock(String previousHash, int proof) {
+        //TODO:get largest list of transactions on the network
         Block block = new Block(currentTransactions, previousHash, proof);
         currentTransactions.clear();
         chain.add(block);

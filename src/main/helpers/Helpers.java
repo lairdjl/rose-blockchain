@@ -108,4 +108,8 @@ public class Helpers{
     public static String getEncryptedJSON(Object object){
             return hashString(getJSON(object));
     }
+
+    public static void log(Object message) {
+        System.out.println(message);
+    }
 }

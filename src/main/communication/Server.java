@@ -14,6 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static helpers.Helpers.DEFAULT_PORT;
+import static helpers.Helpers.log;
 
 /**
  * A communication program which accepts requests from clientList to
@@ -40,7 +41,7 @@ public class Server {
     private static final Server server = new Server();
     private ServerSocket listener;
     private CopyOnWriteArrayList<ClientConnection> clientList;
-    private LinkedBlockingQueue<Object> messages;
+    protected static LinkedBlockingQueue<Object> messages = new LinkedBlockingQueue<Object>();;
 
     private Server() {
         log("The communication is running.");
@@ -51,7 +52,7 @@ public class Server {
             return;
         }
         clientList = new CopyOnWriteArrayList<ClientConnection>();
-        messages = new LinkedBlockingQueue<Object>();
+
 
 
         Thread accept = new Thread() {
@@ -117,60 +118,6 @@ public class Server {
     }
 
 
-    /**
-     * A private thread to handle capitalization requests on a particular
-     * socket.  The client terminates the dialogue by sending a single line
-     * containing only a period.
-     */
-    private class ClientConnection {
-        ObjectInputStream in;
-        ObjectOutputStream out;
-        Socket socket;
-        int clientNumber;
-
-        ClientConnection(Socket socket, int clientNumber) throws Exception {
-            this.socket = socket;
-            this.clientNumber = clientNumber;
-
-            out = new ObjectOutputStream(socket.getOutputStream());
-            in = new ObjectInputStream(socket.getInputStream());
-
-            log("New connection with client# " + clientNumber + " at " + socket);
-            Thread read = new Thread() {
-                public void run() {
-                    while (true) {
-                        try {
-                            Object obj = in.readObject();
-                            if (obj != null || obj.toString().compareTo("") != 0) {
-                                messages.put(obj);
-                                sendToAll(obj);
-                            }
-                        }catch (Exception e) {
-                            try{
-                                socket.close();
-                                System.out.println("Client# "+clientNumber +" connection lost");
-                            }catch (Exception e2){
-                                e.printStackTrace();
-                            }finally {
-                                break;
-                            }
-                            }
-                    }
-                }
-            };
-            read.setDaemon(true); // terminate when main ends
-            read.start();
-        }
-
-        public void write(Object obj) {
-            try {
-                out.writeObject(obj);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public void sendTo(int index, Object message) throws IndexOutOfBoundsException {
         clientList.get(index).write(message);
     }
@@ -184,7 +131,4 @@ public class Server {
      * Logs a simple message.  In this case we just write the
      * message to the communication applications standard output.
      */
-    private static void log(Object message) {
-        System.out.println(message);
-    }
 }
