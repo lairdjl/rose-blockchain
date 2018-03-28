@@ -19,8 +19,8 @@ public class Client {
 
     private ServerConnection server;
     protected static final LinkedBlockingQueue<Object> messages = new LinkedBlockingQueue<Object>();;
-    private Socket socket;
-    private String serverAddress;
+//    private Socket socket;
+//    private String serverAddress;
     private int port;
 
     Frontend frontend;
@@ -40,19 +40,19 @@ public class Client {
     }
 
     public Client(String serverAddress, int port){
-        this.serverAddress = serverAddress;
         this.port = port;
 
-
+        Socket socket;
         try{
-            this.socket = new Socket(this.serverAddress, this.port);
+            socket = new Socket(serverAddress, this.port);
             this.server = new ServerConnection(socket);
+            frontend = new Frontend(this, this.server, socket);
+
         }catch (Exception e){
             e.printStackTrace();
         }
 
 
-        frontend = new Frontend(this, this.server, this.socket);
 
         Thread messageHandling = new Thread() {
             public void run() {
@@ -70,9 +70,6 @@ public class Client {
 
         messageHandling.setDaemon(true);
         messageHandling.start();
-//        Blockchain blockchain = Blockchain.getInstance();
-//        messageArea.append(Helpers.toPrettyFormat(blockchain.getBlockchainJSON()));
-
     }
 
     private void appendMessageToFrontend(Object message){
@@ -81,9 +78,14 @@ public class Client {
     }
 
     public void addConnection(String serverAddress){
+        System.out.println(serverAddress);
+
         try{
             Socket socket = new Socket(serverAddress, this.port);
             server = new ServerConnection(socket);
+
+//            Socket socket2 = new Socket("192.168.1.238", this.port);
+//            server = new ServerConnection(socket);
 
         }catch (Exception e){
             System.out.println("could not connect to new server");
@@ -103,7 +105,9 @@ public class Client {
      */
     public static void main(String[] args) {
         try {
-            Client client = new Client();
+            Client client = new Client("192.168.1.238");
+            Client client2 = new Client("192.168.1.238");
+
         } catch (Exception e) {
             e.printStackTrace();
         }

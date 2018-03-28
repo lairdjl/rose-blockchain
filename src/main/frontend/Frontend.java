@@ -56,7 +56,7 @@ public class Frontend {
         connectionField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String ip = dataField.getText();
+                String ip = dataField.getText().toString();
                 client.addConnection(ip);
             }
         });
