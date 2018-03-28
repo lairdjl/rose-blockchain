@@ -19,11 +19,9 @@ public class ServerConnection {
     ObjectInputStream in;
     ObjectOutputStream out;
     Socket socket;
-    private static LinkedBlockingQueue<Object> messages;
 
 
-    ServerConnection(Socket socket, LinkedBlockingQueue<Object> messages) throws Exception {
-        this.messages = messages;
+    ServerConnection(Socket socket) throws Exception {
         this.socket = socket;
         this.out = new ObjectOutputStream(socket.getOutputStream());
         this.in = new ObjectInputStream(socket.getInputStream());
@@ -33,7 +31,7 @@ public class ServerConnection {
                 while (true) {
                     try {
                         Object obj = in.readObject();
-                        messages.put(obj);
+                        Client.messages.put(obj);
                     } catch (SocketException e) {
                         break;
                     } catch (Exception e) {
@@ -46,11 +44,6 @@ public class ServerConnection {
         read.setDaemon(true);
         read.start();
     }
-
-    ServerConnection(Socket socket) throws Exception{
-        this(socket, messages);
-    }
-
 
     public void write(Object obj) {
         try {
