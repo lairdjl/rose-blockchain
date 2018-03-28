@@ -95,7 +95,7 @@ public class Client {
             server = new ServerConnection(socket,messages);
 
         }catch (Exception e){
-            System.out.println("could not connect to ne");
+            System.out.println("could not connect to new server");
         }
     }
 
