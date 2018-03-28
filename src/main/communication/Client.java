@@ -17,10 +17,8 @@ import static helpers.Helpers.DEFAULT_SERVER;
  * them.
  */
 public class Client {
-    protected static final ArrayList<ServerConnection> connections = new ArrayList<>();
+    protected static final ArrayList<ServerConnection> serverList = new ArrayList<>();
     protected static final LinkedBlockingQueue<Object> messages = new LinkedBlockingQueue<Object>();;
-//    private Socket socket;
-//    private String serverAddress;
     private int port;
 
     Frontend frontend;
@@ -45,7 +43,7 @@ public class Client {
         Socket socket;
         try{
             socket = new Socket(serverAddress, this.port);
-            this.connections.add(new ServerConnection(socket));
+            this.serverList.add(new ServerConnection(socket));
             frontend = new Frontend(this, socket);
 
         }catch (Exception e){
@@ -77,10 +75,10 @@ public class Client {
 
     }
 
-    public void addConnection(String serverAddress){
+    public static void addConnection(String serverAddress){
         try{
             Socket socket = new Socket(serverAddress, this.port);
-            connections.add(new ServerConnection(socket));
+            serverList.add(new ServerConnection(socket));
 
         }catch (Exception e){
             System.out.println("could not connect to new server");
@@ -92,13 +90,13 @@ public class Client {
      * @param obj the object being sent to the communication
      */
     public void send(Object obj) {
-        for(ServerConnection conn: this.connections){
+        for(ServerConnection conn: this.serverList){
             conn.write(obj);
         }
     }
 
-    public static ArrayList<ServerConnection> getConnections() {
-        return connections;
+    public static ArrayList<ServerConnection> getServerList() {
+        return serverList;
     }
 
     /**

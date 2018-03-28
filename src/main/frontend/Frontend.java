@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.Socket;
-import java.util.ArrayList;
 
 import static helpers.Helpers.log;
 
@@ -26,7 +25,7 @@ public class Frontend {
     public JTextArea messageArea = new JTextArea(8, 60);
 
     private static Frontend instance;
-//    private static ArrayList<ServerConnection> connections = new ArrayList<>();
+//    private static ArrayList<ServerConnection> serverList = new ArrayList<>();
     private static Socket socket;
     private static Client client;
 
@@ -45,7 +44,7 @@ public class Frontend {
              */
             public void actionPerformed(ActionEvent e) {
                 log("Action performed");
-                for (ServerConnection conn: Client.getConnections()){
+                for (ServerConnection conn: Client.getServerList()){
                     TransactionJSONObject transactionJsonObject = new TransactionJSONObject(socket.getInetAddress(), conn.getInetAddress(), dataField.getText());
                     conn.write(transactionJsonObject.getJSONTransaction());
                 }

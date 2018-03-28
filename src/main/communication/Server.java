@@ -5,9 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -62,17 +59,18 @@ public class Server {
                     try {
                         Socket s = listener.accept();
                         clientList.add(new ClientConnection(s, clientNumber));
-                        int counter = 0;
                         boolean inList = false;
-                        for(ClientConnection conn : clientList){
+                        for(ServerConnection conn : Client.serverList){
                             if(conn.socket.equals(s)){
                                 inList = true;
                                 break;
                             }
                         }
                         if(!inList){
-                            Client.connections.add(new ServerConnection(s));
+                            //TODO:Add connection from client to server here.
+                            Client.addConnection(s.getInetAddress().toString());
                         }
+                        clientNumber++;
                     } catch (Exception e) {
                         log("error");
                     }
