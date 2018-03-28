@@ -19,7 +19,7 @@ public class ServerConnection {
     ObjectInputStream in;
     ObjectOutputStream out;
     Socket socket;
-    LinkedBlockingQueue<Object> messages;
+    private static LinkedBlockingQueue<Object> messages;
 
 
     ServerConnection(Socket socket, LinkedBlockingQueue<Object> messages) throws Exception {
@@ -45,6 +45,10 @@ public class ServerConnection {
 
         read.setDaemon(true);
         read.start();
+    }
+
+    ServerConnection(Socket socket) throws Exception{
+        this(socket, messages);
     }
 
 

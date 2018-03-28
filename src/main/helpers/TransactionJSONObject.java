@@ -7,7 +7,7 @@ import java.net.InetAddress;
 /**
  * An object for transactions
  */
-public class JSONObject {
+public class TransactionJSONObject {
 
     InetAddress sender;
     String receiver = "test";
@@ -15,7 +15,7 @@ public class JSONObject {
     private static Gson gson = new Gson();
 
 
-    public JSONObject(InetAddress sender, Object obj) {
+    public TransactionJSONObject(InetAddress sender, Object obj) {
         this.obj = obj;
         this.sender = sender;
     }

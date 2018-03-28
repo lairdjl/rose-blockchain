@@ -1,17 +1,15 @@
 package frontend;
 
 import communication.Client;
-import communication.ClientConnection;
-import communication.Server;
 import communication.ServerConnection;
-import helpers.JSONObject;
+import helpers.TransactionJSONObject;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.Socket;
-import java.net.SocketException;
+import java.util.ArrayList;
 
 import static helpers.Helpers.log;
 
@@ -28,12 +26,14 @@ public class Frontend {
     public JTextArea messageArea = new JTextArea(8, 60);
 
     private static Frontend instance;
-    private static ServerConnection connection;
+    private static ArrayList<ServerConnection> connections = new ArrayList<>();
     private static Socket socket;
+    private static Client client;
 
-    public Frontend(ServerConnection connection, Socket socket) {
+    public Frontend(Client client, ServerConnection connection, Socket socket) {
 
-        this.connection = connection;
+        this.client = client;
+        this.connections.add(connection);
         this.socket = socket;
 
         // Add Listeners
@@ -42,14 +42,22 @@ public class Frontend {
              * Responds to pressing the enter key in the textfield
              * by sending the contents of the text field to the
              * communication and displaying the response from the communication
-             * in the text area.  If the response is "." we exit
-             * the whole application, which closes all sockets,
-             * streams and windows.
+             * in the text area.
              */
             public void actionPerformed(ActionEvent e) {
                 log("Action performed");
-                JSONObject jsonObject = new JSONObject(socket.getInetAddress(), dataField.getText());
-                connection.write(jsonObject.getJSONTransaction());
+                TransactionJSONObject transactionJsonObject = new TransactionJSONObject(socket.getInetAddress(), dataField.getText());
+                for (ServerConnection conn:connections){
+                    conn.write(transactionJsonObject.getJSONTransaction());
+                }
+            }
+        });
+
+        connectionField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String ip = dataField.getText();
+                client.addConnection(ip);
             }
         });
 

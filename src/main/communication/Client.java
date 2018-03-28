@@ -61,7 +61,7 @@ public class Client {
         }
 
 
-        Frontend frontend = new Frontend(this.server, this.socket);
+        frontend = new Frontend(this, this.server, this.socket);
 
         Thread messageHandling = new Thread() {
             public void run() {
@@ -69,7 +69,8 @@ public class Client {
                     try {
                         Object message = messages.take();
                         // Do some handling here...
-                        frontend.messageArea.append(message + "\n");
+//                        frontend.messageArea.append(message + "\n");
+                        appendMessageToFrontend(message);
                     } catch (InterruptedException e) {
                     }
                 }
@@ -83,6 +84,20 @@ public class Client {
 
     }
 
+    private void appendMessageToFrontend(Object message){
+        frontend.messageArea.append(message + "\n");
+
+    }
+
+    public void addConnection(String serverAddress){
+        try{
+            Socket socket = new Socket(serverAddress, this.port);
+            server = new ServerConnection(socket,messages);
+
+        }catch (Exception e){
+            System.out.println("could not connect to ne");
+        }
+    }
 
     /**
      *
