@@ -19,7 +19,7 @@ import static helpers.Helpers.DEFAULT_SERVER;
 public class Client {
     protected static final ArrayList<ServerConnection> serverList = new ArrayList<>();
     protected static final LinkedBlockingQueue<Object> messages = new LinkedBlockingQueue<Object>();;
-    private int port;
+//    private int port;
 
     Frontend frontend;
     private static Gson gson = new Gson();
@@ -38,11 +38,11 @@ public class Client {
     }
 
     public Client(String serverAddress, int port){
-        this.port = port;
+//        this.port = port;
 
         Socket socket;
         try{
-            socket = new Socket(serverAddress, this.port);
+            socket = new Socket(serverAddress, port);
             this.serverList.add(new ServerConnection(socket));
             frontend = new Frontend(this, socket);
 
@@ -75,9 +75,9 @@ public class Client {
 
     }
 
-    public static void addConnection(String serverAddress){
+    public static void addConnection(String serverAddress, int port){
         try{
-            Socket socket = new Socket(serverAddress, this.port);
+            Socket socket = new Socket(serverAddress, port);
             serverList.add(new ServerConnection(socket));
 
         }catch (Exception e){

@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.Socket;
 
+import static helpers.Helpers.DEFAULT_PORT;
 import static helpers.Helpers.log;
 
 public class Frontend {
@@ -55,7 +56,7 @@ public class Frontend {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String ip = connectionField.getText().toString();
-                client.addConnection(ip);
+                client.addConnection(ip, DEFAULT_PORT);
             }
         });
 

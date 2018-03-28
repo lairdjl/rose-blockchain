@@ -68,7 +68,7 @@ public class Server {
                         }
                         if(!inList){
                             //TODO:Add connection from client to server here.
-                            Client.addConnection(s.getInetAddress().toString());
+                            Client.addConnection(s.getInetAddress().toString(), DEFAULT_PORT);
                         }
                         clientNumber++;
                     } catch (Exception e) {
