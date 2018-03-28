@@ -3,6 +3,7 @@ package communication;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -51,6 +52,10 @@ public class ServerConnection {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public InetAddress getInetAddress(){
+        return socket.getInetAddress();
     }
 
 }

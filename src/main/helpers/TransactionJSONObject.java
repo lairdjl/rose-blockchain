@@ -9,15 +9,16 @@ import java.net.InetAddress;
  */
 public class TransactionJSONObject {
 
-    InetAddress sender;
-    String receiver = "test";
+    InetAddress sender, receiver;
     Object obj;
     private static Gson gson = new Gson();
 
 
-    public TransactionJSONObject(InetAddress sender, Object obj) {
-        this.obj = obj;
+    public TransactionJSONObject(InetAddress sender, InetAddress receiver,Object obj) {
+        this.receiver = receiver;
         this.sender = sender;
+        this.obj = obj;
+
     }
 
 
