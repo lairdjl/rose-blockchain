@@ -15,7 +15,7 @@ import static helpers.Helpers.log;
 public class ClientConnection {
     private ObjectInputStream in;
     private ObjectOutputStream out;
-    private Socket socket;
+    protected Socket socket;
     private static final Server server = Server.getInstance();
     private int clientNumber;
 

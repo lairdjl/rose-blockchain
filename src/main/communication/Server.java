@@ -62,7 +62,17 @@ public class Server {
                     try {
                         Socket s = listener.accept();
                         clientList.add(new ClientConnection(s, clientNumber));
-                        clientNumber++;
+                        int counter = 0;
+                        boolean inList = false;
+                        for(ClientConnection conn : clientList){
+                            if(conn.socket.equals(s)){
+                                inList = true;
+                                break;
+                            }
+                        }
+                        if(!inList){
+                            Client.connections.add(new ServerConnection(s));
+                        }
                     } catch (Exception e) {
                         log("error");
                     }
