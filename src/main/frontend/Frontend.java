@@ -16,11 +16,10 @@ import java.net.SocketException;
 import static helpers.Helpers.log;
 
 public class Frontend {
-    public JFrame frame = new JFrame("Client");
-    //    private JFrame messageFrame = new JFrame();
 
-    public JPanel messagePanel = new JPanel();
-//    private JPanel
+    private static final int rows = 1;
+    private static final int cols = 2;
+    public JFrame frame = new JFrame("Client");
 
     public JTextField connectionField = new JTextField(40);
     public JTextArea ipArea = new JTextArea(8, 60);
@@ -33,6 +32,7 @@ public class Frontend {
     private static Socket socket;
 
     public Frontend(ServerConnection connection, Socket socket) {
+
         this.connection = connection;
         this.socket = socket;
 
@@ -55,9 +55,19 @@ public class Frontend {
 
         // Layout GUI
         messageArea.setEditable(false);
-//        frame.setLayout(new GridLayout(2,2));
-        frame.getContentPane().add(new JScrollPane(messageArea), "Center");
-        frame.getContentPane().add(dataField, "South");
+
+        frame.setLayout(new GridLayout(rows,cols));
+        JPanel messagePanel = new JPanel();
+        messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.Y_AXIS));
+        messagePanel.add(new JScrollPane(messageArea));
+        messagePanel.add(dataField);
+        frame.getContentPane().add(messagePanel);
+
+        JPanel connectionPanel = new JPanel();
+        connectionPanel.setLayout(new BoxLayout(connectionPanel, BoxLayout.Y_AXIS));
+        connectionPanel.add(new JScrollPane(ipArea));
+        connectionPanel.add(connectionField);
+        frame.add(connectionPanel);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
