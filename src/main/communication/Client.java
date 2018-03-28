@@ -3,16 +3,7 @@ package communication;
 import com.google.gson.Gson;
 import frontend.Frontend;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static helpers.Helpers.DEFAULT_PORT;
@@ -27,7 +18,7 @@ import static helpers.Helpers.DEFAULT_SERVER;
 public class Client {
 
     private ServerConnection server;
-    protected static LinkedBlockingQueue<Object> messages;
+    protected static final LinkedBlockingQueue<Object> messages = new LinkedBlockingQueue<Object>();;
     private Socket socket;
     private String serverAddress;
     private int port;
@@ -52,7 +43,7 @@ public class Client {
         this.serverAddress = serverAddress;
         this.port = port;
 
-        this.messages = new LinkedBlockingQueue<Object>();
+
         try{
             this.socket = new Socket(this.serverAddress, this.port);
             this.server = new ServerConnection(socket);
