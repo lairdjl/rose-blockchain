@@ -2,7 +2,8 @@ package communication;
 
 import com.google.gson.Gson;
 import frontend.Frontend;
-
+import netscape.javascript.JSObject;
+import com.google.gson.JsonObject;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -56,10 +57,15 @@ public class Client {
             public void run() {
                 while (true) {
                     try {
-                        Object message = messages.take();
+                        JsonObject json = gson.fromJson(messages.take().toString(), JsonObject.class);
+
                         // Do some handling here...
-//                        frontend.messageArea.append(message + "\n");
-                        appendMessageToFrontend(message);
+//                        if(json.has("connections")){
+//
+//                        }else{
+                            appendMessageToFrontend(json.toString());
+
+//                        }
                     } catch (InterruptedException e) {
                     }
                 }

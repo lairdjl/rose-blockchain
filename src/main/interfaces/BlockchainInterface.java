@@ -1,4 +1,6 @@
-package blockchain;
+package interfaces;
+
+import blockchain.Block;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 

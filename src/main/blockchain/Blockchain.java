@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import communication.Client;
 import communication.Server;
 import helpers.Helpers;
+import interfaces.BlockchainInterface;
 
 import java.util.concurrent.LinkedBlockingQueue;
 

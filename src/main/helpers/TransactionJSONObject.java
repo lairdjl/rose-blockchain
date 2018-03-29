@@ -1,13 +1,14 @@
 package helpers;
 
 import com.google.gson.Gson;
+import interfaces.JSONObjectInterface;
 
 import java.net.InetAddress;
 
 /**
  * An object for transactions
  */
-public class TransactionJSONObject {
+public class TransactionJSONObject implements JSONObjectInterface {
 
     InetAddress sender, receiver;
     Object obj;
@@ -21,8 +22,8 @@ public class TransactionJSONObject {
 
     }
 
-
-    public String getJSONTransaction() {
+    @Override
+    public String getJSON() {
         return gson.toJson(this);
     }
 

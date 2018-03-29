@@ -47,7 +47,7 @@ public class Frontend {
                 log("Action performed");
                 for (ServerConnection conn: Client.getServerList()){
                     TransactionJSONObject transactionJsonObject = new TransactionJSONObject(socket.getInetAddress(), conn.getInetAddress(), dataField.getText());
-                    conn.write(transactionJsonObject.getJSONTransaction());
+                    conn.write(transactionJsonObject.getJSON());
                 }
             }
         });
