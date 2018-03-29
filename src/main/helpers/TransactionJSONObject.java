@@ -12,8 +12,6 @@ public class TransactionJSONObject implements JSONObjectInterface {
 
     InetAddress sender, receiver;
     Object obj;
-    private static Gson gson = new Gson();
-
 
     public TransactionJSONObject(InetAddress sender, InetAddress receiver,Object obj) {
         this.receiver = receiver;
@@ -21,10 +19,4 @@ public class TransactionJSONObject implements JSONObjectInterface {
         this.obj = obj;
 
     }
-
-    @Override
-    public String getJSON() {
-        return gson.toJson(this);
-    }
-
 }

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import interfaces.JSONObjectInterface;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -15,21 +16,15 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Enumeration;
 
 
-public class Helpers{
+public class Helpers implements JSONObjectInterface {
     public static final String MINED_ADDRESS = "0";
 
     public static final boolean DEBUG = true;
-    private static Gson gson = new Gson();
     private static MessageDigest md;
 
     public static final int DEFAULT_PORT = 9898;
     public static final String DEFAULT_SERVER = "";
 
-
-    public static String getJSON(Object object){
-        String json = gson.toJson(object);
-        return json;
-    }
 
     public static String hashString(String str){
         try{
@@ -50,8 +45,8 @@ public class Helpers{
         JsonParser parser = new JsonParser();
         JsonObject json = parser.parse(jsonString).getAsJsonObject();
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String prettyJson = gson.toJson(json);
+        Gson prettyGson = new GsonBuilder().setPrettyPrinting().create();
+        String prettyJson = prettyGson.toJson(json);
 
         return prettyJson;
     }
@@ -113,7 +108,11 @@ public class Helpers{
         return socket.getInetAddress().toString().substring(1);
     }
 
-    public static void log(Object message) {
-        System.out.println(message);
+    public static void log(Object obj) {
+        System.out.println(obj);
+    }
+
+    public static String getJSON(Object obj) {
+        return gson.toJson(obj);
     }
 }

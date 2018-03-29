@@ -1,8 +1,12 @@
 package interfaces;
 
 import blockchain.Block;
+import blockchain.Blockchain;
+import blockchain.Transaction;
+import com.google.gson.Gson;
 
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
 
 ;
 
@@ -17,6 +21,8 @@ public interface BlockchainInterface {
      */
     //The 'chain' itself
     CopyOnWriteArrayList<blockchain.Block> chain = new CopyOnWriteArrayList<Block>();
+    Gson gson = new Gson();
+    LinkedBlockingQueue<Transaction> currentTransactions = new LinkedBlockingQueue<Transaction>();
 
     /**
      * This is the function for creating a new block

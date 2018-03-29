@@ -10,8 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.Socket;
 
-import static helpers.Helpers.DEFAULT_PORT;
-import static helpers.Helpers.log;
+import static helpers.Helpers.*;
 
 public class Frontend {
 
@@ -47,7 +46,7 @@ public class Frontend {
                 log("Action performed");
                 for (ServerConnection conn: Client.getServerList()){
                     TransactionJSONObject transactionJsonObject = new TransactionJSONObject(socket.getInetAddress(), conn.getInetAddress(), dataField.getText());
-                    conn.write(transactionJsonObject.getJSON());
+                    conn.write(getJSON(transactionJsonObject));
                 }
             }
         });

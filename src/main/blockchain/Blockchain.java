@@ -15,16 +15,12 @@ import static helpers.Helpers.toPrettyFormat;
  *
  */
 public class Blockchain implements BlockchainInterface {
-//    private LinkedBlockingQueue<Object> messages;
-
-    public static final LinkedBlockingQueue<Transaction> currentTransactions = new LinkedBlockingQueue<Transaction>();
     private Block lastBlock;
     private int proof = 100;
     private String previousHash = "1";
     private Client client;
     private Server server;
 
-    private static final Gson gson = new Gson();
     private static final Blockchain blockchain = new Blockchain();
 
 

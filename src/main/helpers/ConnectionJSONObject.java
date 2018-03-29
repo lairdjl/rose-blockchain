@@ -9,24 +9,13 @@ import java.util.ArrayList;
 
 public class ConnectionJSONObject implements JSONObjectInterface {
 
+        private static ArrayList<String> connections = new ArrayList<>();
+        private static ConnectionJSONObject instance = new ConnectionJSONObject();
+        private ConnectionJSONObject() {
 
-        private static Gson gson = new Gson();
-
-        private static ArrayList<String> connections;
-        public ConnectionJSONObject(ArrayList<ServerConnection> serverList) {
-            for(ServerConnection conn: serverList){
-                String ip = conn.getInetAddress().toString().substring(1);
-                if (connections.contains(ip)) {
-                    continue;
-                } else {
-                    connections.add(ip);
-                }
-            }
         }
 
-        @Override
-        public String getJSON() {
-            return gson.toJson(this);
+        public static ConnectionJSONObject getInstance(){
+            return instance;
         }
-
 }

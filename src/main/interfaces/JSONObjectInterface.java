@@ -1,5 +1,7 @@
 package interfaces;
 
+import com.google.gson.Gson;
+
 public interface JSONObjectInterface {
-    public String getJSON();
+    static Gson gson = new Gson();
 }

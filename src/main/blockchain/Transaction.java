@@ -1,12 +1,12 @@
 package blockchain;
 
-import com.google.gson.Gson;
+import interfaces.JSONObjectInterface;
 
-public class Transaction {
+public class Transaction implements JSONObjectInterface {
 
     String sender, recipient;
     Object obj;
-    private static Gson gson = new Gson();
+
     public static Transaction newTransaction(String sender, String recipient, Object obj){
         return new Transaction(sender, recipient, obj);
     }
@@ -45,9 +45,8 @@ public class Transaction {
      *
      * @return the transaction in JSON format
      */
-    public String getTransaction(){
+    public String getJSON(){
         return gson.toJson(this);
-//        return  "{sender: "+ this.sender + ",recipient:" + this.recipient + ",object:" +  +"}";
     }
 
 }

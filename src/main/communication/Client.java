@@ -84,7 +84,9 @@ public class Client {
     public static void addConnection(String serverAddress, int port){
         try{
             Socket socket = new Socket(serverAddress, port);
-            serverList.add(new ServerConnection(socket));
+            ServerConnection conn = new ServerConnection(socket);
+            serverList.add(conn);
+//            conn.write()
 
         }catch (Exception e){
             System.out.println("could not connect to new server");
