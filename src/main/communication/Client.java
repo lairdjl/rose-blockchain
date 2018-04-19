@@ -85,8 +85,12 @@ public class Client {
             ServerConnection conn = new ServerConnection(socket);
 
 //            String temp = gson.toJson(serverList.toArray());
+            ArrayList<String> list = new ArrayList<>();
+            for(ServerConnection serverConn: serverList){
+                list.add(serverConn.getInetAddress().toString());
+            }
             serverList.add(conn);
-            System.out.println(serverList.toString());
+            System.out.println(list);
 //            conn.write(temp);
 
         }catch (Exception e){
