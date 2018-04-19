@@ -2,7 +2,6 @@ package communication;
 
 import com.google.gson.Gson;
 import frontend.Frontend;
-import helpers.TransactionJSONObject;
 import netscape.javascript.JSObject;
 import com.google.gson.JsonObject;
 import java.net.Socket;
@@ -85,14 +84,14 @@ public class Client {
             Socket socket = new Socket(serverAddress, port);
             ServerConnection conn = new ServerConnection(socket);
 
+//            String temp = gson.toJson(serverList.toArray());
             ArrayList<String> list = new ArrayList<>();
             serverList.add(conn);
             for(ServerConnection serverConn: serverList){
                 list.add(serverConn.getInetAddress().toString());
             }
             System.out.println(list);
-            String json = gson.toJson(list);
-            conn.write(json);
+//            conn.write(temp);
 
         }catch (Exception e){
             System.out.println("could not connect to new server");
