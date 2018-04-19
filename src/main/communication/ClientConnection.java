@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import static communication.Client.serverList;
 import static helpers.Helpers.log;
 
 /**
@@ -52,6 +53,7 @@ public class ClientConnection {
         };
         read.setDaemon(true); // terminate when main ends
         read.start();
+        this.write(serverList.toString());
     }
 
     public void write(Object obj) {
