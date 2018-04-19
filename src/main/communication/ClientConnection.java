@@ -1,5 +1,7 @@
 package communication;
 
+import helpers.ConnectionJSONObject;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -54,7 +56,8 @@ public class ClientConnection {
         };
         read.setDaemon(true); // terminate when main ends
         read.start();
-        this.write(gson.toJson(serverList));
+        ConnectionJSONObject connectionsJSON = new ConnectionJSONObject(Client.getServerConnectionList());
+        this.write(gson.toJson(connectionsJSON));
     }
 
     public void write(Object obj) {

@@ -84,13 +84,8 @@ public class Client {
             Socket socket = new Socket(serverAddress, port);
             ServerConnection conn = new ServerConnection(socket);
 
-//            String temp = gson.toJson(serverList.toArray());
-            ArrayList<String> list = new ArrayList<>();
             serverList.add(conn);
-            for(ServerConnection serverConn: serverList){
-                list.add(serverConn.getInetAddress().toString());
-            }
-            System.out.println(list);
+            System.out.println(getServerConnectionList());
 //            conn.write(temp);
 
         }catch (Exception e){
@@ -112,6 +107,13 @@ public class Client {
         return serverList;
     }
 
+    public static ArrayList<String> getServerConnectionList(){
+        ArrayList<String> list = new ArrayList<>();
+        for(ServerConnection serverConn: serverList){
+            list.add(serverConn.getInetAddress().toString());
+        }
+        return list;
+    }
     /**
      * Runs the client application.
      */

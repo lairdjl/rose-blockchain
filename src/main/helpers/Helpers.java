@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import communication.ServerConnection;
 import interfaces.JSONObjectInterface;
 
 import java.io.BufferedReader;
@@ -13,6 +14,7 @@ import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 
 
@@ -115,4 +117,5 @@ public class Helpers implements JSONObjectInterface {
     public static String getJSON(Object obj) {
         return gson.toJson(obj);
     }
+
 }
