@@ -84,8 +84,10 @@ public class Client {
             Socket socket = new Socket(serverAddress, port);
             ServerConnection conn = new ServerConnection(socket);
 
+            String temp = gson.toJson(serverList);
             serverList.add(conn);
-            conn.write(gson.toJson(serverList));
+            System.out.println(temp);
+//            conn.write(temp);
 
         }catch (Exception e){
             System.out.println("could not connect to new server");
