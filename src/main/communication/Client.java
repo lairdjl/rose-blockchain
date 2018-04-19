@@ -84,7 +84,7 @@ public class Client {
             Socket socket = new Socket(serverAddress, port);
             ServerConnection conn = new ServerConnection(socket);
 
-            String temp = gson.toJson(serverList);
+            String temp = gson.toJson(serverList.toArray());
             serverList.add(conn);
             System.out.println(temp);
 //            conn.write(temp);
