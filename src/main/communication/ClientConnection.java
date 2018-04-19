@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import static communication.Client.serverList;
+import static helpers.Helpers.getJSON;
 import static helpers.Helpers.log;
 import static interfaces.JSONObjectInterface.gson;
 
@@ -57,7 +58,7 @@ public class ClientConnection {
         read.setDaemon(true); // terminate when main ends
         read.start();
         ConnectionJSONObject connectionsJSON = new ConnectionJSONObject(Client.getServerConnectionList());
-        this.write(gson.toJson(connectionsJSON));
+        this.write(getJSON(connectionsJSON));
     }
 
     public void write(Object obj) {
