@@ -63,16 +63,21 @@ public class Server {
                         boolean inList = false;
                         for(ServerConnection conn : Client.serverList){
                             if(getSocketIP(conn.socket).compareTo(getSocketIP(s)) == 0){
-                                inList = true;
-                                break;
+//                                inList = true;
+//                                break;
+                            }else{
+                                    //TODO:Add connection from client to server here.
+                                    String serverAddress = getSocketIP(s);
+                                    System.out.println(serverAddress);
+                                    Client.addConnection(serverAddress, DEFAULT_PORT);
                             }
                         }
-                        if(!inList){
-                            //TODO:Add connection from client to server here.
-                            String serverAddress = getSocketIP(s);
-                            System.out.println(serverAddress);
-                            Client.addConnection(serverAddress, DEFAULT_PORT);
-                        }
+//                        if(!inList){
+//                            //TODO:Add connection from client to server here.
+//                            String serverAddress = getSocketIP(s);
+//                            System.out.println(serverAddress);
+//                            Client.addConnection(serverAddress, DEFAULT_PORT);
+//                        }
                         clientNumber++;
                     } catch (Exception e) {
                         log("error");
