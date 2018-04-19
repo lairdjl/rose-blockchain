@@ -90,7 +90,7 @@ public class Client {
                 list.add(serverConn.getInetAddress().toString());
             }
             System.out.println(list);
-            conn.write(list);
+            conn.write(gson.toJson(list));
 
         }catch (Exception e){
             System.out.println("could not connect to new server");
