@@ -14,6 +14,9 @@ import static helpers.Helpers.*;
 
 public class Frontend {
 
+    private enum INPUT_STATE {IP, PORT};
+    private String ip;
+    INPUT_STATE state = INPUT_STATE.IP;
     private static final int rows = 1;
     private static final int cols = 2;
     public JFrame frame = new JFrame("Client");
@@ -54,8 +57,40 @@ public class Frontend {
         connectionField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String ip = connectionField.getText().toString();
-                client.addConnection(ip, DEFAULT_PORT);
+                switch(state){
+                    case IP:
+                        ip = connectionField.getText().toString();
+
+                        if(ip == null || ip.compareTo("") == 0){
+                            ip = "127.0.0.1";
+                        }
+                        ipArea.append(ip + "\n");
+                        ipArea.append("Enter Port (default = 9898): ");
+                        state = INPUT_STATE.PORT;
+                        break;
+
+                    case PORT:
+                        try{
+                            String p = connectionField.getText().toString();
+                            int port;
+                            if(p == null || p.compareTo("") == 0){
+                                port = INITIAL_DEFAULT_PORT;
+
+                            }else{
+                                port = Integer.parseInt(p);
+                            }
+                            client.addConnection(ip, port);
+                        }catch (Exception ex){
+
+                        }finally {
+                            state = INPUT_STATE.IP;
+                            ipArea.append("Enter IP Address:  (default =  127.0.0.1)");
+                        }
+                        break;
+
+
+
+                }
             }
         });
 
@@ -78,6 +113,9 @@ public class Frontend {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+
+        ipArea.append("Enter IP Address:  (default =  127.0.0.1)");
+
     }
 
 

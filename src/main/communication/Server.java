@@ -43,11 +43,14 @@ public class Server {
 
     private Server() {
         log("The communication is running.");
-        try{
-            listener = new ServerSocket(DEFAULT_PORT);
-        }catch(Exception e){
-            e.printStackTrace();
-            return;
+        boolean started = false;
+        while(!started){
+            try{
+                listener = new ServerSocket(DEFAULT_PORT);
+                started = true;
+            }catch(Exception e){
+                DEFAULT_PORT++;
+            }
         }
         clientList = new CopyOnWriteArrayList<ClientConnection>();
 
