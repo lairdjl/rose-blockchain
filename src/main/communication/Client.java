@@ -89,6 +89,7 @@ public class Client {
 //            conn.write(temp);
 
         }catch (Exception e){
+            e.printStackTrace();
             System.out.println("could not connect to new server");
         }
     }

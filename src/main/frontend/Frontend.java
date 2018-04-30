@@ -57,41 +57,48 @@ public class Frontend {
         connectionField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switch(state){
-                    case IP:
-                        ip = connectionField.getText().toString();
+                String in = connectionField.getText();
+                switch (in) {
+                    case "c":
+                        showConnections();
+                    break;
 
-                        if(ip == null || ip.compareTo("") == 0){
-                            ip = "127.0.0.1";
+                    default:
+                        switch (state) {
+                            case IP:
+                                ip = in.toString();
+
+                                if (ip == null || ip.compareTo("") == 0) {
+                                    ip = "127.0.0.1";
+                                }
+                                ipArea.append(ip + "\n");
+                                ipArea.append("Enter Port (default = 9898): ");
+                                state = INPUT_STATE.PORT;
+                                break;
+
+                            case PORT:
+                                try {
+                                    String p = in.toString();
+                                    int port;
+                                    if (p == null || p.compareTo("") == 0) {
+                                        port = INITIAL_DEFAULT_PORT;
+
+                                    } else {
+                                        port = Integer.parseInt(p);
+                                    }
+                                    ipArea.append(port + "\n");
+                                    client.addConnection(ip, port);
+                                } catch (Exception ex) {
+
+                                } finally {
+                                    state = INPUT_STATE.IP;
+                                    showConnections();
+                                    ipArea.append("Enter IP Address:  (default =  127.0.0.1)");
+                                }
+                                break;
+
+
                         }
-                        ipArea.append(ip + "\n");
-                        ipArea.append("Enter Port (default = 9898): ");
-                        state = INPUT_STATE.PORT;
-                        break;
-
-                    case PORT:
-                        try{
-                            String p = connectionField.getText().toString();
-                            int port;
-                            if(p == null || p.compareTo("") == 0){
-                                port = INITIAL_DEFAULT_PORT;
-
-                            }else{
-                                port = Integer.parseInt(p);
-                            }
-                            ipArea.append(port + "\n");
-                            client.addConnection(ip, port);
-                        }catch (Exception ex){
-
-                        }finally {
-                            state = INPUT_STATE.IP;
-                            showConnections();
-                            ipArea.append("Enter IP Address:  (default =  127.0.0.1)");
-                        }
-                        break;
-
-
-
                 }
             }
         });
@@ -125,7 +132,7 @@ public class Frontend {
     protected void showConnections(){
         ipArea.append("\n------------LIST OF CONNECTIONS--------------\n");
         for(ServerConnection conn: client.getServerList()){
-            ipArea.append(conn.getInetAddress().toString() + ":" + conn.socket.getPort() + "\n");
+            ipArea.append(conn.getInetAddress().toString() + ":" + conn.socket.getLocalPort() + "\n");
 
         }
 
