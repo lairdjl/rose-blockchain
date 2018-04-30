@@ -25,7 +25,7 @@ public class Helpers implements JSONObjectInterface {
     private static MessageDigest md;
 
     public static final int INITIAL_DEFAULT_PORT = 9898;
-    public static int DEFAULT_PORT = INITIAL_DEFAULT_PORT;
+    public static int DEFAULT_PORT = 9898;
     public static final String DEFAULT_SERVER = "";
 
 
