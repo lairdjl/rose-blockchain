@@ -19,7 +19,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ServerConnection {
     ObjectInputStream in;
     ObjectOutputStream out;
-    Socket socket;
+    public Socket socket;
 
 
     ServerConnection(Socket socket) throws Exception {

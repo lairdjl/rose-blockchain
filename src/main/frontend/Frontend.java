@@ -79,11 +79,13 @@ public class Frontend {
                             }else{
                                 port = Integer.parseInt(p);
                             }
+                            ipArea.append(port + "\n");
                             client.addConnection(ip, port);
                         }catch (Exception ex){
 
                         }finally {
                             state = INPUT_STATE.IP;
+                            showConnections();
                             ipArea.append("Enter IP Address:  (default =  127.0.0.1)");
                         }
                         break;
@@ -93,6 +95,7 @@ public class Frontend {
                 }
             }
         });
+
 
         // Layout GUI
         messageArea.setEditable(false);
@@ -114,8 +117,19 @@ public class Frontend {
         frame.pack();
         frame.setVisible(true);
 
+        showConnections();
         ipArea.append("Enter IP Address:  (default =  127.0.0.1)");
 
+    }
+
+    protected void showConnections(){
+        ipArea.append("\n------------LIST OF CONNECTIONS--------------\n");
+        for(ServerConnection conn: client.getServerList()){
+            ipArea.append(conn.getInetAddress().toString() + ":" + conn.socket.getPort() + "\n");
+
+        }
+
+        ipArea.append("\n---------------------------------------------\n");
     }
 
 
