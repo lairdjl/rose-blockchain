@@ -74,7 +74,9 @@ public class Server {
                             //TODO:Add connection from client to server here.
                             String serverAddress = getSocketIP(s);
                             System.out.println(serverAddress);
-                            Client.addConnection(serverAddress, s.getLocalPort());
+//                            Client.addConnection(serverAddress, s.getLocalPort());
+                            Client.addConnection(serverAddress, s.getPort());
+
                         }
                         clientNumber++;
                     } catch (Exception e) {

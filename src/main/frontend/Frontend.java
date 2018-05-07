@@ -132,7 +132,7 @@ public class Frontend {
     protected void showConnections(){
         ipArea.append("\n------------LIST OF CONNECTIONS--------------\n");
         for(ServerConnection conn: client.getServerList()){
-            ipArea.append(conn.getInetAddress().toString() + ":" + conn.socket.getLocalPort() + "\n");
+            ipArea.append(conn.getInetAddress().toString() + ":" + conn.socket.getPort() + "\n");
 
         }
 
